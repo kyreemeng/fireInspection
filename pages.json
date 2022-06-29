@@ -1,0 +1,184 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/inspects/index",
+			"style": {
+				"navigationBarTitleText": "智慧消防巡检维保系统",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/protect/index",
+			"style": {
+				"navigationBarTitleText": "维保",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText":"我的",
+				"enablePullDownRefresh": false
+			}
+
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		}
+	    ,{
+            "path" : "pages/inspects/scan",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/point",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/pointDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/tags",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/tasks",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/check",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/fix",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/fixApply",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/protect/fixEnsure",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/protect/fixList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/protect/fixTasks",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/protect/fixDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationStyle": "default",
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "智慧维保通",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
+	},
+	"tabBar": {
+		"color": "#666666",
+		"selectedColor": "#4B87FC",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"height": "50px",
+		"fontSize": "10px",
+		"iconWidth": "24px",
+		"spacing": "3px",
+		"list": [{
+			"pagePath": "pages/inspects/index",
+			"iconPath": "static/image/tab/inspects.png",
+			"selectedIconPath": "static/image/tab/inspects_selected.png",
+			"text": "巡检"
+		},
+		{
+			"pagePath": "pages/protect/index",
+			"iconPath": "static/image/tab/protect.png",
+			"selectedIconPath": "static/image/tab/protect_selected.png",
+			"text": "维保"
+		},
+		{
+			"pagePath": "pages/my/index",
+			"iconPath": "static/image/tab/my.png",
+			"selectedIconPath": "static/image/tab/my_selected.png",
+			"text": "我的"
+		}]
+	}
+}

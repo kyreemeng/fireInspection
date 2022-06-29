@@ -1,0 +1,1 @@
+<view><view><cu-custom vue-id="8dd740cc-1" bgColor="bg-gradual-blue" bind:__l="__l" vue-slots="{{['content']}}"><view slot="content">登录</view></cu-custom></view><view class="content"><view>登录页面</view></view></view>
