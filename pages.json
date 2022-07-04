@@ -32,7 +32,7 @@
             "path" : "pages/inspects/scan",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "扫一扫",
                 "enablePullDownRefresh": false
             }
             
@@ -41,7 +41,7 @@
             "path" : "pages/inspects/point",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "巡检点信息",
                 "enablePullDownRefresh": false
             }
             
@@ -50,7 +50,7 @@
             "path" : "pages/inspects/pointDetail",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "设备查看",
                 "enablePullDownRefresh": false
             }
             

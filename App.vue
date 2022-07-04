@@ -41,4 +41,8 @@
 	/*每个页面公共css */
 	@import 'colorui/main.css';
 	@import 'colorui/icon.css';
+	.content{
+		width: 100%;
+		padding: 0 32rpx;
+	}
 </style>

@@ -4299,4 +4299,8 @@ scroll-view.cu-steps .cu-item {
 .cuIcon-btn:before {
 	content: "\e601";
 }
+.content{
+	width: 100%;
+	padding: 0 32rpx;
+}
 

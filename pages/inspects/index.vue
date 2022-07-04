@@ -3,11 +3,11 @@
 		<view class="set">
 			<text class="title">巡检设置</text>
 			<view class="box flex justify-between align-center">
-				<view class="left  ">
+				<view class="left" @tap="handleScan()">
 					<image src="../../static/image/inspects/icon_scan.png" mode="aspectFit"></image>
 					<view class="name">扫码查询</view>
 				</view>
-				<view class="right">
+				<view class="right" @tap="handleTags()">
 					<image src="../../static/image/inspects/icon_blind.png" mode="aspectFit"></image>
 					<view class="name">标签绑定</view>
 				</view>
@@ -35,6 +35,24 @@
 			return {
 				
 			};
+		},
+		methods:{
+			handleScan(){
+				// uni.scanCode({
+				// 	success: function (res) {
+				// 		console.log('条码类型：' + res.scanType);
+				// 		console.log('条码内容：' + res.result);
+				// 	}
+				// });
+				uni.navigateTo({
+					url:'point'
+				})
+			},
+			handleTags(){
+				uni.navigateTo({
+					url:'tags'
+				})
+			},
 		}
 	}
 </script>
