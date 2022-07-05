@@ -28,15 +28,6 @@
 				"navigationBarTitleText": "登录"
 			}
 		}
-	    ,{
-            "path" : "pages/inspects/scan",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "扫一扫",
-                "enablePullDownRefresh": false
-            }
-            
-        }
         ,{
             "path" : "pages/inspects/point",
             "style" :                                                                                    
@@ -141,6 +132,33 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/tasksPoint",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "巡检点信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/devicesCheck",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设备检查",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/devicesFix",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "设备报修",
                 "enablePullDownRefresh": false
             }
             

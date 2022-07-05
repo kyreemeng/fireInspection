@@ -27,7 +27,7 @@
 .tasks-content .list {
   width: 100%;
   margin-top: 120rpx;
-  padding: 0 32rpx;
+  padding: 0 32rpx 176rpx 32rpx;
 }
 .tasks-content .list .item {
   width: 100%;

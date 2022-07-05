@@ -12,10 +12,10 @@
 				<view class="date">
 					2022-05-19
 				</view>
-				<view class="title flex justify-between align-center">
+				<view class="title flex justify-between align-center" @tap="handlePoint()">
 					<text>P-001-001 主入口东边走廊1号巡检点</text>
 				</view>
-				<view class="info">
+				<view class="info" @tap="handlePoint()">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
 						<text class="value">教学楼1号楼 / 1F</text>
@@ -36,10 +36,10 @@
 				<view class="date">
 					2022-05-19
 				</view>
-				<view class="title flex justify-between align-center">
+				<view class="title flex justify-between align-center" @tap="handlePoint()">
 					<text>P-001-001 主入口东边走廊1号巡检点</text>
 				</view>
-				<view class="info">
+				<view class="info" @tap="handlePoint()">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
 						<text class="value">教学楼1号楼 / 1F</text>
@@ -88,6 +88,11 @@
 					}
 				});
 			},
+			handlePoint(){
+				uni.navigateTo({
+					url:'tasksPoint'
+				})
+			}
 		}
 	}
 </script>
@@ -97,7 +102,7 @@
 	.list{
 		width: 100%;
 		margin-top: 120rpx;
-		padding: 0 32rpx;
+		padding: 0 32rpx 176rpx 32rpx;
 		.item{
 			width: 100%;
 			margin-top: 54rpx;

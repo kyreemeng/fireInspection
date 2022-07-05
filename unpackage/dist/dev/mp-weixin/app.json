@@ -4,7 +4,6 @@
     "pages/protect/index",
     "pages/my/index",
     "pages/index/index",
-    "pages/inspects/scan",
     "pages/inspects/point",
     "pages/inspects/pointDetail",
     "pages/inspects/tags",
@@ -16,7 +15,10 @@
     "pages/protect/fixList",
     "pages/protect/fixTasks",
     "pages/protect/fixDetail",
-    "pages/my/message"
+    "pages/my/message",
+    "pages/inspects/tasksPoint",
+    "pages/inspects/devicesCheck",
+    "pages/inspects/devicesFix"
   ],
   "subPackages": [],
   "window": {

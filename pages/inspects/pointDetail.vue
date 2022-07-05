@@ -128,6 +128,7 @@
 .point-list{
 	.list0{
 		margin-top: 120rpx;
+		padding-bottom: 176rpx;
 		.item{
 			width: 100%;
 			background: #FFFFFF;
@@ -154,7 +155,7 @@
 	}
 	.list1{
 		width: 100%;
-		padding: 0 32rpx;
+		padding: 0 32rpx 176rpx 32rpx;
 		margin-top: 120rpx;
 		.item{
 			margin-top: 30rpx;
