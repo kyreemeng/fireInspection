@@ -20,7 +20,7 @@
 					<image src="../../static/image/inspects/icon_tasks.png" mode="aspectFit"></image>
 					<view class="name">我的巡检任务</view>
 				</view>
-				<view class="right">
+				<view class="right" @tap="handleFixApply()">
 					<image src="../../static/image/inspects/icon_fix.png" mode="aspectFit"></image>
 					<view class="name">我的报修申请</view>
 				</view>
@@ -56,6 +56,16 @@
 			handleTasks(){
 				uni.navigateTo({
 					url:'tasks'
+				})
+			},
+			handleTasks(){
+				uni.navigateTo({
+					url:'tasks'
+				})
+			},
+			handleFixApply(){
+				uni.navigateTo({
+					url:'fixApply'
 				})
 			},
 		}

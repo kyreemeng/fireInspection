@@ -74,19 +74,10 @@
             
         }
         ,{
-            "path" : "pages/inspects/fix",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/inspects/fixApply",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "报修申请",
                 "enablePullDownRefresh": false
             }
             
@@ -95,7 +86,7 @@
             "path" : "pages/protect/fixEnsure",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "待确认报修申请",
                 "enablePullDownRefresh": false
             }
             
@@ -104,16 +95,16 @@
             "path" : "pages/protect/fixList",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "我的维修任务",
                 "enablePullDownRefresh": false
             }
             
         }
         ,{
-            "path" : "pages/protect/fixTasks",
+            "path" : "pages/protect/protectTasks",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "我的维保任务",
                 "enablePullDownRefresh": false
             }
             
@@ -131,7 +122,7 @@
             "path" : "pages/my/message",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "消息通知",
                 "enablePullDownRefresh": false
             }
             

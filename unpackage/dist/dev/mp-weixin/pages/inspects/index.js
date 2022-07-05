@@ -138,7 +138,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _methods;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} //
 //
 //
 //
@@ -176,7 +176,7 @@ var _default =
 
 
   },
-  methods: {
+  methods: (_methods = {
     handleScan: function handleScan() {
       // uni.scanCode({
       // 	success: function (res) {
@@ -197,7 +197,17 @@ var _default =
       uni.navigateTo({
         url: 'tasks' });
 
-    } } };exports.default = _default;
+    } }, _defineProperty(_methods, "handleTasks", function handleTasks()
+  {
+    uni.navigateTo({
+      url: 'tasks' });
+
+  }), _defineProperty(_methods, "handleFixApply", function handleFixApply()
+  {
+    uni.navigateTo({
+      url: 'fixApply' });
+
+  }), _methods) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
