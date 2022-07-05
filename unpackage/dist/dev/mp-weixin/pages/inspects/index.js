@@ -192,6 +192,11 @@ var _default =
       uni.navigateTo({
         url: 'tags' });
 
+    },
+    handleTasks: function handleTasks() {
+      uni.navigateTo({
+        url: 'tasks' });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

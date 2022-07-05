@@ -59,7 +59,7 @@
             "path" : "pages/inspects/tags",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "巡检点标签绑定",
                 "enablePullDownRefresh": false
             }
             
@@ -68,7 +68,7 @@
             "path" : "pages/inspects/tasks",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "我的巡检任务",
                 "enablePullDownRefresh": false
             }
             

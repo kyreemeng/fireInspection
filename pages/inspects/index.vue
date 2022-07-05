@@ -16,7 +16,7 @@
 		<view class="manager">
 			<text class="title">巡检管理</text>
 			<view class="box flex justify-between align-center">
-				<view class="left">
+				<view class="left" @tap="handleTasks()">
 					<image src="../../static/image/inspects/icon_tasks.png" mode="aspectFit"></image>
 					<view class="name">我的巡检任务</view>
 				</view>
@@ -51,6 +51,11 @@
 			handleTags(){
 				uni.navigateTo({
 					url:'tags'
+				})
+			},
+			handleTasks(){
+				uni.navigateTo({
+					url:'tasks'
 				})
 			},
 		}
