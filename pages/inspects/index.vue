@@ -38,15 +38,23 @@
 		},
 		methods:{
 			handleScan(){
-				// uni.scanCode({
-				// 	success: function (res) {
-				// 		console.log('条码类型：' + res.scanType);
-				// 		console.log('条码内容：' + res.result);
-				// 	}
-				// });
-				uni.navigateTo({
-					url:'point'
-				})
+				uni.scanCode({
+					success: function (res) {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+						uni.showToast({
+							title: '扫码成功'
+						});
+						setTimeout(() => {
+							uni.navigateTo({
+								url:'point'
+							})
+						}, "500");
+					
+					}
+				});
+			
+				
 			},
 			handleTags(){
 				uni.navigateTo({
@@ -73,6 +81,12 @@
 </script>
 
 <style lang="scss">
+	page {
+		background: url(https://kyree.me/img/bg_other.png) no-repeat center center;
+		background-size: cover;
+		background-attachment: fixed;
+	
+	}
 .content{
 	width: 100%;
 	padding: 0 32rpx;

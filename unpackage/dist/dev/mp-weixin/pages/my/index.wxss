@@ -24,6 +24,11 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+page {
+  background: url(https://kyree.me/img/bg_other.png) no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 .content .info {
   width: 100%;
   height: 240rpx;

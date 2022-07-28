@@ -55,6 +55,12 @@
 </script>
 
 <style lang="scss">
+	page {
+		background: url(https://kyree.me/img/bg_other.png) no-repeat center center;
+		background-size: cover;
+		background-attachment: fixed;
+	
+	}
 .content{
 	width: 100%;
 	padding: 0 32rpx;

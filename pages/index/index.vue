@@ -30,6 +30,12 @@
 </script>
 
 <style>
+	page {
+		background: url(https://kyree.me/img/bg_login.png) no-repeat center center;
+		background-size: cover;
+		background-attachment: fixed;
+	
+	}
 	.content {
 		display: flex;
 		flex-direction: column;
