@@ -8,6 +8,7 @@
 	<view class="content">
 		<view>
 			登录页面
+			<button class="getbtn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">允许获取</button>
 		</view>
 	</view>
 	</view>
@@ -23,7 +24,78 @@
 		onLoad() {
 
 		},
+		onReady() {
+			this.getLogin()
+		},
 		methods: {
+			getLogin(){
+				uni.login({
+					provider: 'weixin',
+					success: (res) => {
+						let param = {
+							code: res.code,
+						}
+						console.log('code:',res.code)
+						this.wxCode = res.code
+					},
+					fail: (res) => {
+						reject();
+						uni.hideLoading();
+					}
+				})
+				
+			},
+			getPhoneNumber: function(e) {
+				console.log(e.detail.errMsg);
+				this.modalName = null;
+				if (e.detail.errMsg == 'getPhoneNumber:ok') {
+					console.log('用户同意提供手机号');
+					this.encryptedData = e.detail.encryptedData;
+					this.iv = e.detail.iv;
+					this.getinfo();
+			
+				} else {
+					uni.showToast({
+						title: '您拒绝了授权获取您的手机号码',
+						icon: 'none'
+					})
+			
+				}
+			
+			},
+			getinfo: function() {
+				uni.showLoading();
+				let param = {
+					encryptedData: this.encryptedData,
+					iv: this.iv,
+					wxCode:this.wxCode
+				}
+				this.$api
+					.post('/firecontrol/api/wx/user/phoneLogin', param, null)
+					.then(res => {
+						uni.hideLoading();
+						if (res.error_code == 200) {
+							this.mobile = res.data.mobile
+							uni.setStorageSync('mobile', this.mobile)
+							this.user_id = res.data.user_id
+							uni.setStorageSync('user_id', this.user_id)
+						} else {
+							uni.showToast({
+								title: res.error_msg + "请重新授权",
+								icon: 'none'
+							})
+						}
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			
+			},
 
 		}
 	}
