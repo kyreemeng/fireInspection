@@ -3,13 +3,13 @@
 		<view class="info">
 			<image @tap="handleMessage()" class="msg" src="../../static/image/my/icon_message.png" mode="aspectFit"></image>
 			<view class="detail flex  align-center">
-				<image class="avatar" src="../../static/image/my/icon_message.png" mode="aspectFit"></image>
+				<image class="avatar" :src="avatarUrl" mode="aspectFit"></image>
 				<view class="word">
 					<view class="name flex  align-center">
-						<text class="value">用户名</text><text class="line">|</text><view class="tag">巡检员</view>
+						<text class="value">{{nickname}}</text><text class="line">|</text><view class="tag">{{job}}</view>
 					</view>
 					<view class="tel">
-						139****5112
+						{{phone}}
 					</view>
 				</view>
 			</view>
@@ -20,7 +20,7 @@
 				<view class="item1 flex justify-between align-center">
 					<view class="box ">
 						<view class="num text-orange">
-							<text>4</text><text>/</text><text>5</text>
+							<text>{{currentCheckComplete}}</text><text>/</text><text>{{currentCheckAll}}</text>
 						</view>
 						<view class="desc">
 							本期巡检任务
@@ -28,7 +28,7 @@
 					</view>
 					<view class="box ">
 						<view class="num text-green">
-							<text>4</text><text>/</text><text>5</text>
+							<text>0</text><text>/</text><text>0</text>
 						</view>
 						<view class="desc">
 							上期巡检任务
@@ -38,7 +38,7 @@
 				<view class="item2 flex justify-between align-center">
 					<view class="box ">
 						<view class="num text-red">
-							<text>4</text><text>/</text><text>5</text>
+							<text>{{currentMaintenanceComplete}}</text><text>/</text><text>{{currentMaintenanceAll}}</text>
 						</view>
 						<view class="desc">
 							本期维保任务
@@ -46,7 +46,7 @@
 					</view>
 					<view class="box ">
 						<view class="num text-blue">
-							<text>4</text><text>/</text><text>5</text>
+							<text>0</text><text>/</text><text>0</text>
 						</view>
 						<view class="desc">
 							上期维保任务
@@ -62,15 +62,78 @@
 	export default {
 		data() {
 			return {
-				
+				avatarUrl:'',
+				job:'职务',
+				nickname:'昵称',
+				phone:'13000000000',
+				sex:'男',
+				currentCheckAll:0 ,//本期巡检任务（所有）
+				currentCheckComplete:0,//本期巡检任务（已完成）
+				currentMaintenanceAll:0,//本期维保任务（所有）
+				currentMaintenanceComplete:0,//本期维保任务（已完成）
 			};
 		},
+		onLoad() {
+			
+		},
+		onReady() {
+			
+		},
+		onShow() {
+			this.getUserInfo()
+			this.getTaskSpeed()
+		},
+		
 		methods: {
 			handleMessage(){
 				uni.navigateTo({
 					url:'message'
 				})
-			}
+			},
+			getUserInfo: function() {
+				uni.showLoading();
+				let param = {};
+				this.$api
+					.get('/firecontrol/api/wx/user/getUserInfo', param, null)
+					.then(res => {
+						uni.hideLoading();
+						this.avatarUrl = res.avatarUrl
+						this.nickname = res.nickname
+						this.job = res.job
+						this.phone = this.setMobile(res.phone)
+						
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
+			getTaskSpeed: function() {
+				uni.showLoading();
+				let param = {};
+				this.$api
+					.get('/firecontrol/api/wx/user/getTaskSpeed', param, null)
+					.then(res => {
+						uni.hideLoading();
+						this.currentCheckComplete = res.currentCheckComplete  //本期巡检任务（已完成）
+						this.currentCheckAll = res.currentCheckAll  //本期巡检任务（所有）
+						this.currentMaintenanceComplete = res.currentMaintenanceComplete  //本期维保任务（已完成）
+						this.currentMaintenanceAll = res.currentMaintenanceAll //本期维保任务（所有）
+						
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
 		},
 	}
 </script>
@@ -115,8 +178,7 @@
 					margin-left: 15rpx;
 				}
 				.tag{
-					width: 110rpx;
-					height: 36rpx;
+					padding: 2rpx 16rpx;
 					text-align: center;
 					margin-left: 15rpx;
 					background: #DFEDFF;

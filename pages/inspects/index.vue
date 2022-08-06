@@ -37,7 +37,13 @@
 			};
 		},
 		onLoad() {
-			this.getinfo();
+			
+		},
+		onReady() {
+			
+		},
+		onShow() {
+			
 		},
 		methods:{
 			handleScan(){
@@ -79,28 +85,7 @@
 					url:'fixApply'
 				})
 			},
-			getinfo: function() {
-				uni.showLoading();
-				let param = {
-					// encryptedData: this.encryptedData,
-					// iv: this.iv,
-				}
-				this.$api
-					.get('/firecontrol/api/wx/user/getUserInfo', param, null)
-					.then(res => {
-						uni.hideLoading();
-						console.log(res.data)
-					})
-					.catch(err => {
-						uni.hideLoading();
-						uni.showToast({
-							icon: "none",
-							title: "接口请求异常"
-						})
-					});
 			
-			
-			},
 		}
 	}
 </script>

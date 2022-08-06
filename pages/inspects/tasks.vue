@@ -8,54 +8,60 @@
 			</view>
 		</scroll-view>
 		<view class="list" v-show="TabCur==0">
-			<view class="item" v-for="item in 3" :key="item">
+			<mescroll-uni :down="downOption" @down="downCallback" :up="upOption" @up="upcallback" @init="initMescroll" :fixed="true"
+			 :top="mescrollTop+'px'" :bottom="mescrollBottom+'px'">
+			<view class="item" v-for="(item,index) in taskList" :key="index">
 				<view class="date">
 					2022-05-19
 				</view>
 				<view class="title flex justify-between align-center" @tap="handlePoint()">
-					<text>P-001-001 主入口东边走廊1号巡检点</text>
+					<text>{{item.pointName}}</text>
 				</view>
 				<view class="info" @tap="handlePoint()">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">教学楼1号楼 / 1F</text>
+						<text class="value">{{item.campusName}} / {{item.buildingName}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">待检查设备数量</text>
-						<text class="value">20</text>
+						<text class="value">{{item.pendingCheckDeviceCount}}</text>
 					</view>
 					<view class="word3 flex justify-between align-center">
 						<text class="desc">已检查设备数量</text>
-						<text class="value">2</text>
+						<text class="value">{{item.completeCheckDeviceCount}}</text>
 					</view>
 				</view>
 			</view>
+			</mescroll-uni>
 		</view>
 		<view class="list tab1" v-show="TabCur==1">
-			<view class="item" v-for="item in 3" :key="item">
+			<mescroll-uni :down="downOption" @down="downCallback" :up="upOption" @up="upcallback" @init="initMescroll" :fixed="true"
+			 :top="mescrollTop+'px'" :bottom="mescrollBottom+'px'">
+			<view class="item" v-for="(item,index) in taskList" :key="index">
 				<view class="date">
 					2022-05-19
 				</view>
 				<view class="title flex justify-between align-center" @tap="handlePoint()">
-					<text>P-001-001 主入口东边走廊1号巡检点</text>
+					<text>{{item.pointName}}</text>
 				</view>
 				<view class="info" @tap="handlePoint()">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">教学楼1号楼 / 1F</text>
+						<text class="value">{{item.campusName}} / {{item.buildingName}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">待检查设备数量</text>
-						<text class="value">20</text>
+						<text class="value">{{item.pendingCheckDeviceCount}}</text>
 					</view>
 					<view class="word3 flex justify-between align-center">
 						<text class="desc">已检查设备数量</text>
-						<text class="value">2</text>
+						<text class="value">{{item.completeCheckDeviceCount}}</text>
 					</view>
 				</view>
 				<image  src="../../static/image/inspects/icon_finished.png" mode="aspectFit"></image>
 <!-- 				<image  src="../../static/image/inspects/icon_unfinished.png" mode="aspectFit"></image>
  -->			</view>
+ 	</mescroll-uni>
 		</view>
 		<view class="bottom">
 			<view class="btn" @tap="handleScan()">
@@ -66,19 +72,49 @@
 </template>
 
 <script>
+	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue';
 	export default {
+		components: {
+			MescrollUni
+		},
 		data() {
 			return {
 				TabList: ['进行中','已结束'],
 				TabCur: 0,
 				scrollLeft: 0,
+				downOption: {
+					auto: false
+				},
+				upOption: {
+					auto: false
+				},
+				mescroll: null,
+				mescrollTop: 0,
+				mescrollBottom: 0,
+				taskList:[],
+				taskStatus:1,
 			};
+		},
+		onLoad() {
+			this.mescrollTop = uni.upx2px(90);
+			this.mescrollBottom = uni.upx2px(174);
+		},
+		onReady() {
+			
+		},
+		onShow() {
+			if (this.mescroll) {
+				this.mescroll.scrollTo(0, 0);
+				this.mescroll.resetUpScroll();
+			}
 		},
 		methods:{
 			tabSelect(e) {
 				console.log(this.TabList[e.currentTarget.dataset.id])
 				this.TabCur = e.currentTarget.dataset.id;
 				this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
+				this.taskStatus = this.TabCur+1
+				this.mescroll.resetUpScroll();
 			},
 			handleScan(){
 				uni.scanCode({
@@ -92,7 +128,44 @@
 				uni.navigateTo({
 					url:'tasksPoint'
 				})
-			}
+			},
+			initMescroll: function(mescroll) {
+				this.mescroll = mescroll;
+				this.mescroll.resetUpScroll();
+			},
+			upcallback: function(mescroll) {
+				uni.showLoading();
+				let param = {
+					pageNum: mescroll.num,
+					pageSize: mescroll.size,
+					taskType:'check',
+					taskStatus:this.taskStatus
+				};
+				this.$api
+					.post('/firecontrol/api/wx/task/getTaskPage', param, null)
+					.then(res => {
+						uni.hideLoading();
+							if (mescroll.num == 1) {
+								this.taskList = res.content;
+							} else {
+								this.taskList = this.taskList.concat(res.content);
+							}
+							mescroll.endSuccess(res.content.length, res.content.length >= mescroll.size);
+						
+					})
+					.catch(err => {
+						mescroll.endErr();
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
+			downCallback: function(mescroll) {
+				mescroll.resetUpScroll();
+			},
 		}
 	}
 </script>
@@ -101,11 +174,10 @@
 .tasks-content{
 	.list{
 		width: 100%;
-		margin-top: 120rpx;
-		padding: 0 32rpx 176rpx 32rpx;
 		.item{
 			width: 100%;
 			margin-top: 54rpx;
+			padding: 0 32rpx;
 			border-radius: 8rpx;
 			.date{
 				font-size: 32rpx;

@@ -74,17 +74,9 @@
 					.post('/firecontrol/api/wx/user/phoneLogin', param, null)
 					.then(res => {
 						uni.hideLoading();
-						if (res.error_code == 200) {
-							this.mobile = res.data.mobile
-							uni.setStorageSync('mobile', this.mobile)
-							this.user_id = res.data.user_id
-							uni.setStorageSync('user_id', this.user_id)
-						} else {
-							uni.showToast({
-								title: res.error_msg + "请重新授权",
-								icon: 'none'
-							})
-						}
+							this.accessToken = res.accessToken
+							uni.setStorageSync('accessToken', this.accessToken)
+							console.log('存储accessToken：'+this.accessToken )
 					})
 					.catch(err => {
 						uni.hideLoading();
@@ -93,7 +85,6 @@
 							title: "接口请求异常"
 						})
 					});
-			
 			
 			},
 

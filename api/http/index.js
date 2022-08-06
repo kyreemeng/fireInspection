@@ -3,8 +3,8 @@
  * 基于 Promise 对象实现更简单的 request 使用方式，支持请求和响应拦截
  */
 
-// const baseUrl = "https://mock.apifox.cn/m1/1182610-0-default";  //测试环境
- const baseUrl = 'https://sorberlin.com';  //正式环境
+const baseUrl = "https://mock.apifox.cn/m1/1182610-0-default";  //测试环境
+// const baseUrl = 'https://sorberlin.com'; //正式环境
 
 
 export default {
@@ -37,8 +37,10 @@ export default {
 		options.dataType = options.dataType || this.config.dataType
 		options.data = options.data || {}
 		options.method = options.method || this.config.method
-	
 
+		if (uni.getStorageSync('accessToken')) {
+			this.config.header['accessToken'] = uni.getStorageSync('accessToken')
+		}
 
 		return new Promise((resolve, reject) => {
 			let _config = null
@@ -55,13 +57,22 @@ export default {
 				}
 
 				if (statusCode === 200) { //成功
-					if (response.data && response.data.error_code == "30001" ) {
-						console.log('token无效')
-					} else {
-						resolve(response.data);
-					}
+				resolve(response.data.body);
+				
+					// if (response.data.code == 200||response.data.succeed) {
+					// 	resolve(response.data.body);
+					// } else {
+					// 	uni.showToast({
+					// 		title: response.data.message,
+					// 		icon: 'none'
+					// 	})
+					// }
 
-				} else {
+				} else if (statusCode === 401){   //用户信息失效
+				// 重新打开登录页面进行登录
+				
+					
+				}else {
 					reject(response)
 				}
 			}
@@ -72,11 +83,14 @@ export default {
 			if (!_config.thirdRequest) {
 				_config.url = _config.baseUrl + _config.url
 			}
-			
-			if(uni.getStorageSync('web_token')){
-				const web_token = uni.getStorageSync('web_token');
-				_config.data.web_token = web_token;
-			}
+
+
+
+
+			// if(uni.getStorageSync('web_token')){
+			// 	const web_token = uni.getStorageSync('web_token');
+			// 	_config.data.web_token = web_token;
+			// }
 
 			//请求拦截器
 			if (this.interceptor.request) {
@@ -181,5 +195,3 @@ function _reslog(res) {
 			break;
 	}
 }
-
-
