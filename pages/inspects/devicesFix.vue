@@ -4,17 +4,17 @@
 			<text class="title">设备信息</text>
 			<view class="box">
 				<view class="top">
-					<text class="name">灭火器001</text>
+					<text class="name">{{deviceInfo.deviceName}}</text>
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">教学楼1号楼 / 1F</text>
+						<text>所在位置</text><text class="value">{{deviceInfo.buildingName}}/{{deviceInfo.floor}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>具体位置</text><text class="value">101房间</text>
+						<text>具体位置</text><text class="value">{{deviceInfo.room}}{{deviceInfo.room==1?'室内':'室外'}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>设备编号</text><text class="value">S20220501010001</text>
+						<text>设备编号</text><text class="value">{{deviceInfo.deviceSn}}</text>
 					</view>
 				</view>
 			</view>
@@ -56,12 +56,47 @@
 	export default {
 		data() {
 			return {
-				
+				deviceInfo:{},
+				deviceId:null,
 			};
+		},
+		onLoad(options) {
+			if (options) {
+				this.deviceInfo = JSON.parse(options.deviceInfo)
+				this.deviceId = JSON.parse(options.deviceInfo).deviceId
+				console.log('fix接收到deviceId：'+this.deviceId)
+			}
+		},
+		onReady() {
+			
+		},
+		onShow() {
+			
 		},
 		methods: {
 			fixSubmit() {
 				
+			},
+			deviceRepair: function() {
+				uni.showLoading();
+				let param = {
+					deviceId: this.deviceId
+				};
+				this.$api
+					.post('/firecontrol/api/wx/task/deviceRepair', param, null)
+					.then(res => {
+						uni.hideLoading();
+						
+			
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
 			},
 			
 		}

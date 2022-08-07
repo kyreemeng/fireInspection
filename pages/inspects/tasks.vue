@@ -20,7 +20,7 @@
 				<view class="info" @tap="handlePoint()">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">{{item.campusName}} / {{item.buildingName}}</text>
+						<text class="value">{{item.buildingName}}/{{item.floorName}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">待检查设备数量</text>
@@ -47,7 +47,7 @@
 				<view class="info" @tap="handlePoint()">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">{{item.campusName}} / {{item.buildingName}}</text>
+						<text class="value">{{item.buildingName}}/{{item.floorName}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">待检查设备数量</text>
