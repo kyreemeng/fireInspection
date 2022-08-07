@@ -28,7 +28,7 @@
 					</view>
 					<view class="box ">
 						<view class="num text-green">
-							<text>0</text><text>/</text><text>0</text>
+							<text>{{lastCheckComplete}}</text><text>/</text><text>{{lastCheckAll}}</text>
 						</view>
 						<view class="desc">
 							上期巡检任务
@@ -46,7 +46,7 @@
 					</view>
 					<view class="box ">
 						<view class="num text-blue">
-							<text>0</text><text>/</text><text>0</text>
+							<text>{{lastMaintenanceComplete}}</text><text>/</text><text>{{lastMaintenanceAll}}</text>
 						</view>
 						<view class="desc">
 							上期维保任务
@@ -71,6 +71,10 @@
 				currentCheckComplete:0,//本期巡检任务（已完成）
 				currentMaintenanceAll:0,//本期维保任务（所有）
 				currentMaintenanceComplete:0,//本期维保任务（已完成）
+				lastCheckAll:0,//上期巡检任务（所有）
+				lastCheckComplete:0,//上期巡检任务（已完成）
+				lastMaintenanceAll:0,//上期维保任务（所有）
+				lastMaintenanceComplete:0,//上期维保任务（已完成）
 			};
 		},
 		onLoad() {
@@ -123,6 +127,11 @@
 						this.currentCheckAll = res.currentCheckAll  //本期巡检任务（所有）
 						this.currentMaintenanceComplete = res.currentMaintenanceComplete  //本期维保任务（已完成）
 						this.currentMaintenanceAll = res.currentMaintenanceAll //本期维保任务（所有）
+						
+						this.lastCheckComplete = res.lastCheckComplete  //上期巡检任务（已完成）
+						this.lastCheckAll = res.lastCheckAll  //上期巡检任务（所有）
+						this.lastMaintenanceComplete = res.lastMaintenanceComplete //上期维保任务（已完成）
+						this.lastMaintenanceAll = res.lastMaintenanceAll //上期维保任务（所有）
 						
 					})
 					.catch(err => {

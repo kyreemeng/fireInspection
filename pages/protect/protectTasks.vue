@@ -12,7 +12,7 @@
 			 :top="mescrollTop+'px'" :bottom="mescrollBottom+'px'">
 			<view class="item" v-for="(item,index) in taskList" :key="index">
 				<view class="date">
-					2022-05-19
+					{{item.releaseTime}}
 				</view>
 				<view class="title flex justify-between align-center" @tap="handlePoint()">
 					<text>{{item.pointName}}</text>
@@ -39,7 +39,7 @@
 			 :top="mescrollTop+'px'" :bottom="mescrollBottom+'px'">
 			<view class="item" v-for="(item,index) in taskList" :key="index">
 				<view class="date">
-					2022-05-19
+					{{item.releaseTime}}
 				</view>
 				<view class="title flex justify-between align-center" @tap="handlePoint()">
 					<text>{{item.pointName}}</text>
