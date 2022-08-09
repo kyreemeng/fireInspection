@@ -28,7 +28,22 @@
 						<text class="box-title">拍照取证</text>
 					</view>
 					<view class="name flex  align-center" >
-						<text class="box-icon cuIcon-roundadd text-black text-bold" ></text>
+						<view class="action">
+							{{imgList.length}}/6
+						</view>
+					</view>	
+				</view>
+				<view class="cu-form-group" style="padding-top: 20rpx;">
+					<view class="grid col-3 grid-square flex-sub">
+						<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+						 <image :src="imgList[index]" mode="aspectFill"></image>
+							<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
+								<text class='cuIcon-close'></text>
+							</view>
+						</view>
+						<view class="solids" @tap="ChooseImage" v-if="imgList.length<6">
+							<text class='cuIcon-cameraadd'></text>
+						</view>
 					</view>
 				</view>
 				<view class="extra-dev flex justify-between align-center"   >
@@ -40,12 +55,16 @@
 					</view>
 				</view>
 				<view class="remarks">
-					<input type="text" placeholder="请输入备注信息"  >
+					<input type="text" :value="memo" placeholder="请输入备注信息"  >
 				</view>
 			</view>
 		</view>
+		
+	
+	
+		
 	<view class="bottom-btn">
-		<view class="btn" @tap="fixSubmit()">
+		<view class="btn" @tap="handleRepair()">
 			确认报修
 		</view>
 	</view>
@@ -58,6 +77,8 @@
 			return {
 				deviceInfo:{},
 				deviceId:null,
+				imgList: [],
+				memo:null,
 			};
 		},
 		onLoad(options) {
@@ -74,19 +95,96 @@
 			
 		},
 		methods: {
-			fixSubmit() {
+			handleRepair() {
+				if(this.imgList.length<0){
+					uni.showToast({
+						icon: "none",
+						title: "请上传图片"
+					})
+				}else{
+					this.deviceRepair();
+				}
 				
+			},
+			ChooseImage() {
+				uni.chooseImage({
+					count: 6, //图片数量
+					sizeType: ['compressed'], //压缩
+					sourceType: ['album'], //拍照
+					success: (res) => {
+						console.log(JSON.stringify(res.tempFilePaths));
+						if (this.imgList.length != 0) {
+							this.imgList = this.imgList.concat(res.tempFilePaths)
+						} else {
+							this.imgList = res.tempFilePaths
+						}
+						this.uploadFileSingle(res.tempFilePaths[0]);
+					}
+				});
+			},
+			//上传图片
+			uploadFileSingle: function(filePath) {
+				console.log('开始上传图片')
+				uni.uploadFile({
+					url: this.baseUrl + '/firecontrol/api/manage/file/upload', //仅为示例，非真实的接口地址
+					filePath: filePath,
+					name: 'file',
+					formData: {
+						accessToken: uni.getStorageSync('accessToken')
+					},
+					success: result => {
+						if (result.data) {
+							console.log('图片地址：'+result.data);
+							// let res = JSON.parse(result.data);
+							// if (res.error_code == 0) {
+							// 	that.licensePic = res.data.file_path;
+							// }
+						}
+						uni.hideLoading();
+					},
+					fail: result => {
+						uni.hideLoading();
+						console.log(JSON.stringify(result));
+					}
+				});
+			},
+			ViewImage(e) {
+				uni.previewImage({
+					urls: this.imgList,
+					current: e.currentTarget.dataset.url
+				});
+			},
+			DelImg(e) {
+				uni.showModal({
+					title: '提示',
+					content: '确定要删除这张图片吗',
+					cancelText: '取消',
+					confirmText: '确认',
+					success: res => {
+						if (res.confirm) {
+							this.imgList.splice(e.currentTarget.dataset.index, 1)
+						}
+					}
+				})
 			},
 			deviceRepair: function() {
 				uni.showLoading();
 				let param = {
-					deviceId: this.deviceId
+					deviceId: this.deviceId,
+					images:this.imgList,
 				};
+				if(this.memo){
+					param.memo = this.memo
+				}
 				this.$api
 					.post('/firecontrol/api/wx/task/deviceRepair', param, null)
 					.then(res => {
 						uni.hideLoading();
-						
+						uni.showToast({
+							icon: "none",
+							title: "报修成功"
+						})
+						// 返回上一级页面
 			
 					})
 					.catch(err => {
@@ -147,8 +245,8 @@
 		.fix-info{
 			width: 686rpx;
 			margin-top: 56rpx;
-			background: #FFFFFF;
 			border-radius: 8rpx;
+			padding-bottom: 20rpx;
 			.list{
 				margin-top: 24rpx;
 				.fireFight-dev,.extra-dev{
