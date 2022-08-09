@@ -55,7 +55,7 @@
 					</view>
 				</view>
 				<view class="remarks">
-					<input type="text" :value="memo" placeholder="请输入备注信息"  >
+					<input type="text" v-model="memo"  placeholder="请输入备注信息"  >
 				</view>
 			</view>
 		</view>
@@ -96,7 +96,7 @@
 		},
 		methods: {
 			handleRepair() {
-				if(this.imgList.length<0){
+				if(this.imgList.length<1){
 					uni.showToast({
 						icon: "none",
 						title: "请上传图片"
@@ -184,7 +184,11 @@
 							icon: "none",
 							title: "报修成功"
 						})
-						// 返回上一级页面
+						setTimeout(function() {
+							uni.redirectTo({
+								url:'fixApply'
+							})
+						}, 1000);
 			
 					})
 					.catch(err => {
