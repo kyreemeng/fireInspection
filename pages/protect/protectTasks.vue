@@ -35,7 +35,7 @@
 			</mescroll-uni>
 		</view>
 		<view class="list tab1" v-show="TabCur==1">
-			<mescroll-uni :down="downOption" @down="downCallback" :up="upOption" @up="upcallback" @init="initMescroll" :fixed="true"
+			<mescroll-uni :down="downOption" @down="downCallback" :up="upOption" @up="upcallback"  :fixed="true"
 			 :top="mescrollTop+'px'" :bottom="mescrollBottom+'px'">
 			<view class="item" v-for="(item,index) in taskList" :key="index">
 				<view class="date">
@@ -103,10 +103,7 @@
 			
 		},
 		onShow() {
-			if (this.mescroll) {
-				this.mescroll.scrollTo(0, 0);
-				this.mescroll.resetUpScroll();
-			}
+		
 		},
 		methods:{
 			tabSelect(e) {
