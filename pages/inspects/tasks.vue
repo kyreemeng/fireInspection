@@ -58,9 +58,9 @@
 						<text class="value">{{item.completeCheckDeviceCount}}</text>
 					</view>
 				</view>
-				<image  src="../../static/image/inspects/icon_finished.png" mode="aspectFit"></image>
-<!-- 				<image  src="../../static/image/inspects/icon_unfinished.png" mode="aspectFit"></image>
- -->			</view>
+				<image  src="../../static/image/inspects/icon_finished.png" mode="aspectFit" v-show="item.taskStatus==2"></image>
+				<image  src="../../static/image/inspects/icon_unfinished.png" mode="aspectFit" v-show="item.taskStatus==3"></image>
+			</view>
  	</mescroll-uni>
 		</view>
 		<view class="bottom">
@@ -92,7 +92,7 @@
 				mescrollTop: 0,
 				mescrollBottom: 0,
 				taskList:[],
-				taskStatus:1,
+				taskStatus:1,  ////1:进行中 2：已完成 3：未完成 4:终止
 			};
 		},
 		onLoad() {
