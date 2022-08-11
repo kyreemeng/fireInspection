@@ -2,24 +2,28 @@
 	<view class="content">
 		<view class="point_name">
 			<view class="box">
-				<view class="top">
-					<text class="name">灭火器003</text>
+				<view class="top flex justify-between align-center">
+					<text class="name">{{deviceName}}</text>
+					<text class="time">{{reportTime}}</text>
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">教学楼1号楼 / 1F</text>
+						<text>所在位置</text><text class="value">{{deviceName}}{{buildingName}}{{floorName}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>设备类型</text><text class="value">消防设备</text>
+						<text>设备类型</text><text class="value">{{deviceType}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>异常指标</text><text class="value">铅封是否完好</text>
+						<text>异常指标</text><text class="value">{{targetName}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>照片取证</text><text class="value">照片1</text>
+						<text>照片取证</text>
+						<view class="value" >
+							<image v-for="(item,index) in reportImages" :key="index" :src="item" mode="aspectFit"></image>
+						</view>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>报修备注</text><text class="value">备注信息备注信息</text>
+						<text>报修备注</text><text class="value">{{reportMemo}}</text>
 					</view>
 				</view>
 			</view>
@@ -49,12 +53,63 @@
 	export default {
 		data() {
 			return {
-				
+				repairFlowId:null,
+				deviceName:null,
+				reportTime:null,
+				campusName:null,
+				buildingName:null,
+				floorName:null,
+				deviceType:null,
+				targetName:null,
+				reportImages:[],
+				reportMemo:null,
+				repairSpeedInfo:{},
 			};
+		},
+		onLoad(options) {
+			console.log('接收到repairFlowId：' + options.repairFlowId)
+			this.repairFlowId = options.repairFlowId
+			this.getDeviceTypeList();
+		},
+		onReady() {
+			
+		},
+		onShow() {
+			
 		},
 		methods: {
 			fixSubmit() {
 				
+			},
+			getDeviceTypeList: function() {
+				uni.showLoading();
+				let param = {
+					repairFlowId:this.repairFlowId
+				};
+				this.$api
+					.get('/firecontrol/api/wx/maintenance/getReportDetail', param, null)
+					.then(res => {
+						uni.hideLoading();
+						this.deviceName = res.deviceName
+						this.reportTime = res.reportTime
+						this.campusName = res.campusName
+						this.buildingName = res.buildingName
+						this.floorName = res.floorName
+						this.deviceType = res.deviceType
+						this.targetName = res.targetName
+						this.reportImages = res.reportImages
+						this.reportMemo = res.reportMemo
+						this.repairSpeedInfo = res.repairSpeedInfo
+						
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
 			},
 			
 		}
@@ -95,10 +150,22 @@
 					font-weight: 400;
 					color: #858B9C;
 					line-height: 40rpx;
-
-					.value {
-						color: #333333;
+					.word{
+						margin-top: 12rpx;
+						.value {
+							width: 490rpx;
+							text-align: right;
+							color: #333333;
+							image {
+								width: 140rpx;
+								height: 140rpx;
+								margin-left: 16rpx;
+								border-radius: 8rpx;
+							}
+						}
 					}
+
+					
 				}
 			}
 		}
