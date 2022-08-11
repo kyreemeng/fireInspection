@@ -98,7 +98,7 @@
 		};
 	},
 	onLoad() {
-		this.mescrollTop = uni.upx2px(1)+this.CustomBar
+		this.mescrollTop = uni.upx2px(90);
 		
 	},
 	onReady() {
