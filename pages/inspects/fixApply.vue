@@ -162,15 +162,15 @@
 			width: 100%;
 			margin-top: 120rpx;
 			.item{
+				width: 100%;
 				margin-top: 30rpx;
 				padding: 0 32rpx;
-				width: 100%;
-				background: #FFFFFF;
 				border-radius: 8rpx;
 				.title{
 					width: 100%;
 					height: 80rpx;
 					padding: 0 28rpx;
+					background: #FFFFFF;
 					border-bottom: 1rpx solid  #E5E5E5;
 					.review-btn{
 						padding: 2rpx 12rpx;
@@ -191,6 +191,7 @@
 					font-weight: 400;
 					color: #858B9C;
 					line-height: 54rpx;
+					background: #FFFFFF;
 					.value{
 						width: 490rpx;
 						text-align: right;
