@@ -30,13 +30,17 @@
 			<view class="fix-date">
 				<text class="title">维修预计完成时间</text>
 				<view class="date-content">
-					<input type="text" placeholder="请选择时间">
+					<picker class="picker"  mode="date" :value="estimateCompleteTime"  :start="currentDate" @change="DateChange">
+						<text >
+							{{estimateCompleteTime?estimateCompleteTime:'请选择时间'}}
+						</text>
+					</picker>
 				</view>
 			</view>
 			<view class="fix-remarks">
 				<text class="title">维修计划备注</text>
 				<view  class="remarks-content">
-					<input type="text" placeholder="请输入备注">
+					<input type="text" v-model="repairPlanMemo" placeholder="请输入备注">
 				</view>
 			</view>
 		</view>
@@ -64,6 +68,9 @@
 				reportImages:[],
 				reportMemo:null,
 				repairSpeedInfo:{},
+				estimateCompleteTime:null,
+				currentDate:null,
+				repairPlanMemo:null,
 			};
 		},
 		onLoad(options) {
@@ -72,15 +79,36 @@
 			this.getDeviceTypeList();
 		},
 		onReady() {
-			
+			let date = new Date();
+			let month = date.getMonth() + 1;
+			let day = date.getDate();
+			let date2 = new Date(date);
+			date2.setDate(day - 6);
+			let month2 = date2.getMonth() + 1;
+			let day2 = date2.getDate();
+			this.currentDate = date.getFullYear() + "-" + (month > 9 ? month : ('0' + month)) + "-" + (day > 9 ? day : ('0' +
+				day));
 		},
 		onShow() {
 			
 		},
 		methods: {
 			fixSubmit() {
+					
+				if(this.estimateCompleteTime){
+					this.confirmRepair();
+				}else{
+					uni.showToast({
+						icon: "none",
+						title: "请选择维修预计完成时间"
+					})
+				}
 				
 			},
+		DateChange(e) {
+			this.estimateCompleteTime = e.detail.value
+			console.log(this.estimateCompleteTime)
+		},
 			getDeviceTypeList: function() {
 				uni.showLoading();
 				let param = {
@@ -111,6 +139,37 @@
 					});
 			
 			},
+			confirmRepair: function() {
+				uni.showLoading();
+				let param = {
+					repairFlowId:this.repairFlowId,
+					estimateCompleteTime:this.estimateCompleteTime
+				};
+				if(this.repairPlanMemo){
+					param.repairPlanMemo = this.repairPlanMemo
+				}
+				this.$api
+					.post('/firecontrol/api/wx/maintenance/confirmRepair', param, null)
+					.then(res => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "确认成功"
+						})
+						setTimeout(function() {
+							uni.navigateBack()
+						}, 1000);
+						
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
 			
 		}
 	}
@@ -118,13 +177,11 @@
 
 <style lang="scss">
 	.content {
-		padding-bottom: 176rpx;
 		.point_name {
 			margin-top: 56rpx;
-
+			padding-bottom: 190rpx;
 			.box {
 				margin-top: 24rpx;
-
 				.top {
 					width: 100%;
 					height: 80rpx;
