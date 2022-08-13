@@ -1,9 +1,9 @@
 <template>
 	<view class="fixensure-content">
 		<view class="choose flex justify-between align-center ">
-				<picker class="picker  " @change="DeviceChange" :value="deviceIndex" :range-key="'deviceType'" :range="deviceTypeList">
+				<picker class="picker  " @change="DeviceChange" :value="deviceIndex"  :range="deviceTypeList">
 					<text>
-						{{deviceIndex>-1?deviceTypeList[deviceIndex].deviceType:'设备类型'}}
+						{{deviceIndex>-1?deviceTypeList[deviceIndex]:'设备类型'}}
 					</text>
 					<text class="box-icon cuIcon-triangledownfill text-grey" ></text>
 				</picker>
@@ -57,7 +57,7 @@
 	data() {
 		return {
 			deviceIndex: -1,
-			deviceTypeList: [],
+			deviceTypeList:[],
 			deviceType:null,
 			downOption: {
 				auto: false
@@ -69,7 +69,6 @@
 			mescrollTop:0,
 			mescrollBottom:0,
 			repairList:[],
-			deviceTypeList:[],
 			currentDate:null,
 			reportDate:'',
 		};
@@ -96,9 +95,9 @@
 	methods: {
 		DeviceChange(e) {
 			this.deviceIndex = e.detail.value
-			this.deviceType = this.deviceTypeList[this.deviceIndex].deviceType
+			this.deviceType = this.deviceTypeList[this.deviceIndex]
+			console.log('deviceType：'+this.deviceType)
 			this.mescroll.resetUpScroll();
-			console.log(this.deviceTypeList[this.deviceIndex].deviceType)
 		},
 		DateChange(e) {
 			this.reportDate = e.detail.value
@@ -157,7 +156,7 @@
 			uni.showLoading();
 			let param = {};
 			this.$api
-				.get('/firecontrol/api/manage/deviceType/getDeviceTypeList', param, null)
+				.get('/firecontrol/api/wx/maintenance/getDeviceTypeList', param, null)
 				.then(res => {
 					uni.hideLoading();
 					this.deviceTypeList = res

@@ -8,119 +8,187 @@
 			</view>
 		</scroll-view>
 		<view class="choose flex justify-between align-center">
-				<picker class="picker  " @change="BuildingChange" :value="building" :range="buildingList">
+				<picker class="picker  " @change="DeviceChange" :value="deviceIndex"  :range="deviceTypeList">
 					<text>
-						{{building>-1?buildingList[building]:'设备类型'}}
+						{{deviceIndex>-1?deviceTypeList[deviceIndex]:'设备类型'}}
 					</text>
 					<text class="box-icon cuIcon-triangledownfill text-grey" ></text>
 				</picker>
-				<picker class="picker  " @change="LayerChange" :value="layer" :range="LayerList">
+				<picker class="picker"  mode="date" :value="reportDate"   @change="DateChange">
 					<text >
-						{{layer>-1?LayerList[layer]:'报修日期'}}
+						{{reportDate?reportDate:'报修日期'}}
 					</text>
 					<text class="box-icon cuIcon-triangledownfill text-grey" ></text>
 				</picker>
 		</view>
-		<view class="list" v-show="TabCur==0">
-			<view class="item">
+		<view class="list" >
+			<mescroll-uni :down="downOption" @down="downCallback" :up="upOption" @up="upcallback" @init="initMescroll" :fixed="true"
+			 :top="mescrollTop+'px'" >
+			<view class="item" v-for="(item,index) in repairList " :key="index">
 				<view class="title flex justify-between align-center">
 					<text>灭火器001</text>
-					<view class="btn" @tap="handleDetail()">查看</view>
+					<view class="btn" @tap="handleDetail(item.repairFlowId)">查看</view>
 				</view>
 				<view class="info">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">教学楼1号楼 / 1F</text>
+						<text class="value">{{item.campus}}{{item.building}}{{item.floor}}{{item.roomName}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">设备类型</text>
-						<text class="value">消防设备</text>
+						<text class="value">{{item.deviceType}}</text>
 					</view>
 					<view class="word3 flex justify-between align-center">
 						<text class="desc">异常指标</text>
-						<text class="value">铅封是否完好</text>
+						<text class="value">{{item.targetName}}</text>
 					</view>
 					<view class="word4 flex justify-between align-center">
 						<text class="desc">报修时间</text>
-						<text class="value">2022-05-20 11:22:33</text>
+						<text class="value">{{item.reportTime}}</text>
 					</view>
 					<view class="word5 flex justify-between align-center">
 						<text class="desc">维修状态</text>
-						<text class="value">维修中</text>
+						<text class="value" v-if="item.repairStatus==1">未开始</text>
+						<text class="value" style="color:#FF8935;" v-else-if="item.repairStatus==2">进行中</text>
+						<text class="value" style="color: #15C46B;" v-else-if="item.repairStatus==3">已完成</text>
+						<text class="value" v-else>--</text>
 					</view>
 					<view class="word6 flex justify-between align-center">
 						<text class="desc">完成时间</text>
-						<text class="value">--</text>
+						<text class="value" v-if="TabCur==0">--</text>
+						<text class="value" v-else>{{item.completeTime}}</text>
 					</view>
 				</view>
 			</view>
+			</mescroll-uni>
 		</view>
-		<view class="list" v-show="TabCur==1">
-			<view class="item">
-				<view class="title flex justify-between align-center">
-					<text>灭火器003</text>
-					<view class="btn"  @tap="handleDetail()">查看</view>
-				</view>
-				<view class="info">
-					<view class="word1 flex justify-between align-center">
-						<text class="desc">所在位置</text>
-						<text class="value">教学楼1号楼 / 1F</text>
-					</view>
-					<view class="word2 flex justify-between align-center">
-						<text class="desc">设备类型</text>
-						<text class="value">消防设备</text>
-					</view>
-					<view class="word3 flex justify-between align-center">
-						<text class="desc">异常指标</text>
-						<text class="value">铅封是否完好</text>
-					</view>
-					<view class="word4 flex justify-between align-center">
-						<text class="desc">报修时间</text>
-						<text class="value">2022-05-20 11:22:33</text>
-					</view>
-					<view class="word5 flex justify-between align-center">
-						<text class="desc">维修状态</text>
-						<text class="value">已完成</text>
-					</view>
-					<view class="word6 flex justify-between align-center">
-						<text class="desc">完成时间</text>
-						<text class="value">2022-05-20 11:22:33</text>
-					</view>
-				</view>
-			</view>
-		</view>
+	
 	</view>
 	
 </template>
 
 <script>
+	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue';
 	export default {
+		components: {
+			MescrollUni
+		},
 	data() {
 		return {
 			TabList: ['未完成','已完成'],
 			TabCur: 0,
 			scrollLeft: 0,
-			building: -1,
-			buildingList: ['1栋', '2栋', '3栋'],
-			layer: -1,
-			LayerList: ['2022-07-05', '2022-07-06', '2022-07-08'],
+			deviceIndex: -1,
+			deviceTypeList:[],
+			deviceType:null,
+			reportDate:'',
+			downOption: {
+				auto: false
+			},
+			upOption: {
+				auto: false
+			},
+			mescroll: null,
+			mescrollTop: 0,
+			mescrollBottom: 0,
+			repairStatus:2, //  2:未完成 3：已完成
+			repairList:[],
 		};
+	},
+	onLoad() {
+		this.mescrollTop = uni.upx2px(60)+this.CustomBar;
+	},
+	onReady() {
+		this.getDeviceTypeList()
+	},
+	onShow() {
+		
 	},
 	methods: {
 		tabSelect(e) {
 			console.log(this.TabList[e.currentTarget.dataset.id])
 			this.TabCur = e.currentTarget.dataset.id;
 			this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
+			this.repairStatus = this.TabCur+2
+			this.mescroll.resetUpScroll();
 		},
-		BuildingChange(e) {
-			this.building = e.detail.value
-			console.log(this.buildingList[this.building])
+		DeviceChange(e) {
+			this.deviceIndex = e.detail.value
+			this.deviceType = this.deviceTypeList[this.deviceIndex]
+			console.log('deviceType：'+this.deviceType)
+			this.mescroll.resetUpScroll();
 		},
-		LayerChange(e) {
-			this.layer = e.detail.value
-			console.log(this.LayerList[this.layer])
+		DateChange(e) {
+			this.reportDate = e.detail.value
+			this.mescroll.resetUpScroll();
+			console.log(this.reportDate)
 		},
-		handleDetail(){
+		handleDetail(repairFlowId){
+		uni.navigateTo({
+			url:'repairDetail?repairFlowId='+repairFlowId	
+		})
+		},
+		initMescroll: function(mescroll) {
+			this.mescroll = mescroll;
+			this.mescroll.resetUpScroll();
+		},
+		upcallback: function(mescroll) {
+			uni.showLoading();
+		let param = {
+			pageNum: mescroll.num,
+			pageSize: mescroll.size,
+			repairStatus:this.repairStatus,
+		};
+		if(this.deviceType){
+			param.deviceType = this.deviceType
+			
+		}
+		if(this.reportDate){
+			param.reportDate = this.reportDate
+			
+		}
+			this.$api
+				.post('/firecontrol/api/wx/maintenance/getRepairPage', param, null)
+				.then(res => {
+					uni.hideLoading();
+						if (mescroll.num == 1) {
+							this.repairList = res.content;
+						} else {
+							this.repairList = this.repairList.concat(res.content);
+						}
+						mescroll.endSuccess(res.content.length, res.content.length >= mescroll.size);
+					
+				})
+				.catch(err => {
+					mescroll.endErr();
+					uni.hideLoading();
+					uni.showToast({
+						icon: "none",
+						title: "接口请求异常"
+					})
+				});
+		
+		},
+		downCallback: function(mescroll) {
+			mescroll.resetUpScroll();
+		},
+		getDeviceTypeList: function() {
+			uni.showLoading();
+			let param = {};
+			this.$api
+				.get('/firecontrol/api/wx/maintenance/getDeviceTypeList', param, null)
+				.then(res => {
+					uni.hideLoading();
+					this.deviceTypeList = res
+					
+				})
+				.catch(err => {
+					uni.hideLoading();
+					uni.showToast({
+						icon: "none",
+						title: "接口请求异常"
+					})
+				});
 		
 		},
 	}
@@ -130,10 +198,11 @@
 <style lang="scss">
 	.tags-content{
 		.choose{
-			margin-top: 90rpx;
 			width: 100%;
 			height: 88rpx;
 			background: #FFFFFF;
+			position: fixed;
+			top: 90rpx;
 			.picker{
 				width: 375rpx;
 				height: 88rpx;
@@ -150,17 +219,17 @@
 		}
 		.list{
 			width: 100%;
-			padding: 0 32rpx;
 			.item{
 				margin-top: 30rpx;
+				padding: 0 32rpx;
 				width: 100%;
-				background: #FFFFFF;
 				border-radius: 8rpx;
 				.title{
 					width: 100%;
 					height: 80rpx;
 					padding: 0 28rpx;
 					border-bottom: 1rpx solid  #E5E5E5;
+					background: #FFFFFF;
 					.btn{
 						width: 110rpx;
 						height: 54rpx;
@@ -180,7 +249,10 @@
 					font-weight: 400;
 					color: #858B9C;
 					line-height: 54rpx;
+							background: #FFFFFF;
 					.value{
+						width: 490rpx;
+						text-align: right;
 						color: #333333;
 					}
 				}

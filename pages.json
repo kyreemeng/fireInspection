@@ -155,6 +155,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/protect/repairDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "报修详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "default",

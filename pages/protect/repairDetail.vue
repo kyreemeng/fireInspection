@@ -16,38 +16,52 @@
 					<view class="word flex justify-between align-center">
 						<text>异常指标</text><text class="value">{{targetName}}</text>
 					</view>
-					<view class="word flex justify-between align-center">
+					<view class="word flex justify-between align-center" v-show="showDetail">
 						<text>照片取证</text>
 						<view class="value" >
 							<image v-for="(item,index) in reportImages" :key="index" :src="item" mode="aspectFit"></image>
 						</view>
 					</view>
-					<view class="word flex justify-between align-center">
+					<view class="word flex justify-between align-center" v-show="showDetail">
 						<text>报修备注</text><text class="value">{{reportMemo}}</text>
 					</view>
 				</view>
+				<view class="show-area flex justify-center ">
+					<view class="btn flex justify-between align-center" @tap="handleShow()" v-if="!showDetail"><text>展开</text><text class="cuIcon-unfold" style="font-size: 26rpx;"> </text></view>
+					<view class="btn flex justify-between align-center" @tap="handleShow()" v-else><text>收起</text><text class="cuIcon-fold" style="font-size: 26rpx;"> </text></view>
+				</view>
 			</view>
 			<view class="fix-date">
-				<text class="title">维修预计完成时间</text>
+				<text class="title">维修时间</text>
 				<view class="date-content">
-					<picker class="picker"  mode="date" :value="estimateCompleteTime"  :start="currentDate" @change="DateChange">
+					<picker class="picker"  mode="date" :value="repairTime"  :end="currentDate" @change="DateChange">
 						<text >
-							{{estimateCompleteTime?estimateCompleteTime:'请选择时间'}}
+							{{repairTime?repairTime:'请选择时间'}}
 						</text>
 					</picker>
 				</view>
 			</view>
+			<view class="fix-date">
+				<text class="title">状态</text>
+				<view class="date-content">
+					<picker @change="StatusChange" :value="statusIndex" :range="statusList">
+						<view class="picker">
+							{{statusIndex>-1?statusList[statusIndex]:'请选择状态'}}
+						</view>
+					</picker>
+				</view>
+			</view>
 			<view class="fix-remarks">
-				<text class="title">维修计划备注</text>
+				<text class="title">维修进展备注</text>
 				<view  class="remarks-content">
-					<textarea type="text" v-model="repairPlanMemo" placeholder="请输入备注" auto-height></textarea>
+					<textarea type="text" v-model="repairProgressMemo" placeholder="请输入备注" auto-height></textarea>
 				</view>
 			</view>
 		</view>
 		
 	<view class="bottom-btn">
-		<view class="btn" @tap="fixSubmit()">
-			确认并由我报修
+		<view class="btn" @tap="repairUpdate()">
+			更新维修进展
 		</view>
 	</view>
 	</view>
@@ -57,6 +71,7 @@
 	export default {
 		data() {
 			return {
+				showDetail:false,
 				repairFlowId:null,
 				deviceName:null,
 				reportTime:null,
@@ -68,9 +83,12 @@
 				reportImages:[],
 				reportMemo:null,
 				repairSpeedInfo:{},
-				estimateCompleteTime:null,
+				repairTime:null,
+				statusIndex: -1,
+				statusList: ['未开始', '进行中', '已完成'],
+				repairStatus:0,
 				currentDate:null,
-				repairPlanMemo:null,
+				repairProgressMemo:null,
 			};
 		},
 		onLoad(options) {
@@ -93,20 +111,33 @@
 			
 		},
 		methods: {
-			fixSubmit() {		
-				if(this.estimateCompleteTime){
-					this.confirmRepair();
-				}else{
+			repairUpdate() {		
+				if(!this.repairTime){
 					uni.showToast({
 						icon: "none",
-						title: "请选择维修预计完成时间"
+						title: "请选择维修时间"
 					})
+				}else if(this.repairStatus==0){
+					uni.showToast({
+						icon: "none",
+						title: "请选择维修状态"
+					})
+				}else {
+					this.updateRepair()
 				}
 				
 			},
+			handleShow(){
+				this.showDetail = !this.showDetail
+			},
 		DateChange(e) {
-			this.estimateCompleteTime = e.detail.value
-			console.log(this.estimateCompleteTime)
+			this.repairTime = e.detail.value
+			console.log(this.repairTime)
+		},
+		StatusChange(e) {
+			this.statusIndex = e.detail.value
+			this.repairStatus  = Number(this.statusIndex) +1
+			console.log(this.statusList[this.statusIndex]+'：'+this.repairStatus)
 		},
 			getReportDetail: function() {
 				uni.showLoading();
@@ -138,22 +169,23 @@
 					});
 			
 			},
-			confirmRepair: function() {
+			updateRepair: function() {
 				uni.showLoading();
 				let param = {
 					repairFlowId:this.repairFlowId,
-					estimateCompleteTime:this.estimateCompleteTime
+					repairTime:this.repairTime,
+					repairStatus:this.repairStatus
 				};
-				if(this.repairPlanMemo){
-					param.repairPlanMemo = this.repairPlanMemo
+				if(this.repairProgressMemo){
+					param.repairProgressMemo = this.repairProgressMemo
 				}
 				this.$api
-					.post('/firecontrol/api/wx/maintenance/confirmRepair', param, null)
+					.post('/firecontrol/api/wx/maintenance/updateRepairProgress', param, null)
 					.then(res => {
 						uni.hideLoading();
 						uni.showToast({
 							icon: "none",
-							title: "确认成功"
+							title: "更新成功"
 						})
 						setTimeout(function() {
 							uni.navigateBack()
@@ -222,6 +254,20 @@
 					}
 
 					
+				}
+				.show-area{
+					width: 100%;
+					padding: 24rpx 0;
+					background: #FFFFFF;
+					height: 80rpx;
+					color: #4B87FC;
+					border-top: 1rpx solid #E5E5E5;
+					border-radius:0 0  8rpx 8rpx;
+					.btn{
+						width: 90rpx;
+						font-size: 24rpx;
+						font-weight: 500;
+					}
 				}
 			}
 		}
