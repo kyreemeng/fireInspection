@@ -8,7 +8,7 @@
 				</view>
 				<view class="bottom flex-direction justify-between">		
 						<view class="word flex justify-between align-center">
-							<text>所在位置</text><text class="value">{{buildingName}}/{{floorName}}</text>
+							<text>所在位置</text><text class="value">{{buildingName}}{{floorName}}</text>
 						</view>
 						<view class="word flex justify-between align-center">
 							<text>设备数量</text><text class="value">{{deviceNum}}</text>

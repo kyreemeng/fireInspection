@@ -14,10 +14,10 @@
 				<view class="date">
 					{{item.releaseTime}}
 				</view>
-				<view class="title flex justify-between align-center" @tap="handlePoint()">
+				<view class="title flex justify-between align-center" @tap="handlePoint(item.taskId)">
 					<text>{{item.pointName}}</text>
 				</view>
-				<view class="info" @tap="handlePoint()">
+				<view class="info" @tap="handlePoint(item.taskId)">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
 						<text class="value">{{item.buildingName}}/{{item.floorName}}</text>
@@ -41,10 +41,10 @@
 				<view class="date">
 					{{item.releaseTime}}
 				</view>
-				<view class="title flex justify-between align-center" @tap="handlePoint()">
+				<view class="title flex justify-between align-center" @tap="handlePoint(item.pointId)">
 					<text>{{item.pointName}}</text>
 				</view>
-				<view class="info" @tap="handlePoint()">
+				<view class="info" @tap="handlePoint(item.pointId)">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
 						<text class="value">{{item.buildingName}}/{{item.floorName}}</text>
@@ -121,9 +121,9 @@
 					}
 				});
 			},
-			handlePoint(){
+			handlePoint(pointId){
 				uni.navigateTo({
-					url:'tasksPoint'
+					url:'tasksPoint?pointId='+pointId
 				})
 			},
 			initMescroll: function(mescroll) {

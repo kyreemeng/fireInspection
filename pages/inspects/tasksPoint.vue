@@ -4,17 +4,17 @@
 			<text class="title">巡检点</text>
 			<view class="box">
 				<view class="top">
-					<text class="name">P-001-001 主入口东边走廊1号巡</text>
+					<text class="name">{{taskDetail.pointName}}</text>
 				</view>
 				<view class="bottom flex-direction justify-between">		
 						<view class="word flex justify-between align-center">
-							<text>所在位置</text><text class="value">教学楼1号楼 / 1F</text>
+							<text>所在位置</text><text class="value">{{taskDetail.campusName}}{{taskDetail.buildingName}}{{taskDetail.floorName}}</text>
 						</view>
 						<view class="word flex justify-between align-center">
-							<text>设备数量</text><text class="value">20</text>
+							<text>待检查设备数量</text><text class="value">{{taskDetail.pendingCheckDeviceCount}}</text>
 						</view>
 						<view class="word flex justify-between align-center">
-							<text>当前状态</text><text class="value">可用</text>
+							<text>已检查设备数量</text><text class="value">{{taskDetail.completeCheckDeviceCount}}</text>
 						</view>
 				</view>
 			</view>
@@ -25,7 +25,7 @@
 				<view class="fireFight-dev flex justify-between align-center">
 					<view class="desc">
 						<text class="box-icon cuIcon-round text-blue"></text>
-						<text class="box-title">消防设备（5）</text>
+						<text class="box-title">消防设备（{{fireDeviceList.length}}）</text>
 					</view>
 					<view class="name flex  align-center" @tap="handleFireFight()">
 						<text class="box-icon cuIcon-triangledownfill text-blue"  v-if="showfireFight"></text>
@@ -33,23 +33,26 @@
 					</view>
 				</view>
 				<view class="fireFight-list" v-show="showfireFight">
-					<view class="item flex justify-between align-center" v-for="item in 3" :key="key">
+					<view class="item flex justify-between align-center" v-for="(item,index) in fireDeviceList" :key="index">
 						<view class="num flex  align-center">
-						<text class="name">灭火器002</text>
-						<view class="fix-word">修</view>
+						<text class="name">{{item.deviceName}}</text>
+						<view class="fix-word" v-show="item.deviceCurrentStatus==2">修</view>
 						</view>
 						<view class="room">
-							101房间
+							{{item.deviceLocation}}
 						</view>
-						<view class="btn-todo" @tap="handleDetail()">
+						<view class="btn-todo" @tap="handleDetail(item.deviceId)" v-show="item.checkStatus==2">
 							待检查
+						</view>
+						<view class="btn-done"  v-show="item.checkStatus==1">
+							已检查
 						</view>
 					</view>
 				</view>
 				<view class="extra-dev flex justify-between align-center"   >
 					<view class="desc flex  align-center">
 						<text class="box-icon cuIcon-round text-blue"></text>
-						<text class="box-title">其他设备（0）</text>
+						<text class="box-title">其他设备（{{otherDeviceList.length}}）</text>
 					</view>
 					<view class="name" @tap="handleExtra()">
 						<text class="box-icon cuIcon-triangledownfill text-blue" v-if="showExtra"></text>
@@ -57,15 +60,18 @@
 					</view>
 				</view>
 				<view class="fireFight-list" v-show="showExtra">
-					<view class="item flex justify-between align-center" v-for="item in 2" :key="key">
+					<view class="item flex justify-between align-center" v-for="(item,index) in otherDeviceList" :key="index">
 						<view class="num flex  align-center">
-						<text class="name">灭火器002</text>
-						<view class="fix-word">修</view>
+						<text class="name">{{item.deviceName}}</text>
+						<view class="fix-word" v-show="item.deviceCurrentStatus==2">修</view>
 						</view>
 						<view class="room">
-							101房间
+							{{item.deviceLocation}}
 						</view>
-						<view class="btn-done" >
+						<view class="btn-todo" @tap="handleDetail(item.deviceId)" v-show="item.checkStatus==2">
+							待检查
+						</view>
+						<view class="btn-done"  v-show="item.checkStatus==1">
 							已检查
 						</view>
 					</view>
@@ -81,7 +87,25 @@
 			return {
 				showfireFight:true,
 				showExtra:true,
+				pointId:null,
+				taskDetail:{},
+				fireDeviceList:[],
+				otherDeviceList:[],
 			};
+		},
+		onLoad(options) {
+			if(options.pointId){
+				console.log('接收到pointId：' + options.pointId)
+				this.pointId = options.pointId
+				this.getCheckDetail()
+			}
+			
+		},
+		onReady() {
+		
+		},
+		onShow() {
+		
 		},
 		methods:{
 			handleFireFight(){
@@ -90,11 +114,35 @@
 			handleExtra(){
 				this.showExtra = !this.showExtra
 			},
-			handleDetail(){
+			handleDetail(deviceId){
 				uni.navigateTo({
-					url:"./devicesCheck"
+					url:"./devicesCheck?deviceId="+deviceId
 				})
-			}
+			},
+			getCheckDetail: function() {
+				uni.showLoading();
+				let param = {
+					pointId:this.pointId
+				};
+				this.$api
+					.post('/firecontrol/api/wx/task/getCurrentTaskCheckPointDetail', param, null)
+					.then(res => {
+						uni.hideLoading();
+						this.taskDetail = res.taskDetail
+						this.fireDeviceList = res.fireDeviceList
+						if(res.otherDeviceList){
+							this.otherDeviceList = res.otherDeviceList
+						}
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
 		}
 	}
 </script>
@@ -129,6 +177,8 @@
 					color: #858B9C;
 					line-height: 40rpx;
 					.value{
+						width: 430rpx;
+						text-align: right;
 						color: #333333;
 					}
 				}

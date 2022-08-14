@@ -96,9 +96,21 @@
 	export default {
 		data() {
 			return {
-				showfireFight: true,
-				showExtra: true,
+				deviceId:null,
 			};
+		},
+		onLoad(options) {
+			if(options.deviceId){
+				console.log('接收到deviceId：' + options.deviceId)
+				this.deviceId = options.deviceId
+			}
+			
+		},
+		onReady() {
+		
+		},
+		onShow() {
+		
 		},
 		methods: {
 			handleFix(){
