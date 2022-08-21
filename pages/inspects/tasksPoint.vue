@@ -87,6 +87,7 @@
 			return {
 				showfireFight:true,
 				showExtra:true,
+				taskId:null,
 				pointId:null,
 				taskDetail:{},
 				fireDeviceList:[],
@@ -116,7 +117,7 @@
 			},
 			handleDetail(deviceId){
 				uni.navigateTo({
-					url:"./devicesCheck?deviceId="+deviceId
+					url:"./devicesCheck?deviceId="+deviceId+'&taskId='+this.taskId
 				})
 			},
 			getCheckDetail: function() {
@@ -128,6 +129,7 @@
 					.post('/firecontrol/api/wx/task/getCurrentTaskCheckPointDetail', param, null)
 					.then(res => {
 						uni.hideLoading();
+						this.taskId = res.taskId
 						this.taskDetail = res.taskDetail
 						this.fireDeviceList = res.fireDeviceList
 						if(res.otherDeviceList){

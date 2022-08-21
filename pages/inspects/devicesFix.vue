@@ -8,10 +8,10 @@
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">{{deviceInfo.buildingName}}/{{deviceInfo.floor}}</text>
+						<text>所在位置</text><text class="value">{{deviceInfo.buildingName}}{{deviceInfo.floor}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>具体位置</text><text class="value">{{deviceInfo.room}}{{deviceInfo.room==1?'室内':'室外'}}</text>
+						<text>具体位置</text><text class="value">{{deviceInfo.room}}{{deviceInfo.door==1?'室内':'室外'}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
 						<text>设备编号</text><text class="value">{{deviceInfo.deviceSn}}</text>
@@ -77,16 +77,22 @@
 			return {
 				deviceInfo:{},
 				deviceId:null,
+				taskId:null,
 				imgList: [],
 				memo:null,
 			};
 		},
 		onLoad(options) {
-			if (options) {
+			if (options.deviceInfo) {
 				this.deviceInfo = JSON.parse(options.deviceInfo)
 				this.deviceId = JSON.parse(options.deviceInfo).deviceId
 				console.log('fix接收到deviceId：'+this.deviceId)
 			}
+			if(JSON.parse(options.deviceInfo).taskId){
+				this.taskId = JSON.parse(options.deviceInfo).taskId
+				console.log('fix接收到taskId：' + this.taskId)
+			}
+			
 		},
 		onReady() {
 			
@@ -173,6 +179,9 @@
 					deviceId: this.deviceId,
 					images:this.imgList,
 				};
+				if(this.taskId){
+					param.taskId = this.taskId
+				}
 				if(this.memo){
 					param.memo = this.memo
 				}
@@ -241,6 +250,8 @@
 					line-height: 40rpx;
 
 					.value {
+						width: 490rpx;
+						text-align: right;
 						color: #333333;
 					}
 				}

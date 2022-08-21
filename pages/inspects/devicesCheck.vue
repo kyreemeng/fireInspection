@@ -4,17 +4,17 @@
 			<text class="title">设备信息</text>
 			<view class="box">
 				<view class="top">
-					<text class="name">灭火器001</text>
+					<text class="name">{{deviceName}}</text>
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">教学楼1号楼 / 1F</text>
+						<text>所在位置</text><text class="value">{{campusName}}{{buildingName}}{{floorName}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>具体位置</text><text class="value">101房间</text>
+						<text>具体位置</text><text class="value">{{roomName}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>设备编号</text><text class="value">S20220501010001</text>
+						<text>设备编号</text><text class="value">{{deviceId}}</text>
 					</view>
 				</view>
 			</view>
@@ -22,57 +22,13 @@
 		<view class="info">
 			<text class="title">指标信息</text>
 			<view class="list">
-				<view class="item  flex justify-between align-center">
-					<text>支架是否牢固、完好</text>
+				<view class="item  flex justify-between align-center" v-for="(item,index) in targetInfoList" :key="index" >
+					<text>{{item.targetName}}</text>
 					<view class="right-btn flex justify-between align-center">
-						<view class="normal">
+						<view class="normal" :class="item.status==1?'choosed':''"  @tap="switchNormal(index)">
 							正常
 						</view>
-						<view class="abnormal">
-							异常
-						</view>
-					</view>
-				</view>
-				<view class="item  flex justify-between align-center">
-					<text>是否在正常压力范围内</text>
-					<view class="right-btn flex justify-between align-center">
-						<view class="normal">
-							正常
-						</view>
-						<view class="abnormal">
-							异常
-						</view>
-					</view>
-				</view>
-				<view class="item  flex justify-between align-center">
-					<text>铅封是否完好</text>
-					<view class="right-btn flex justify-between align-center">
-						<view class="normal">
-							正常
-						</view>
-						<view class="abnormal">
-							异常
-						</view>
-					</view>
-				</view>
-				<view class="item  flex justify-between align-center">
-					<text>支架是否清洁、干净</text>
-					<view class="right-btn flex justify-between align-center">
-						<view class="normal">
-							正常
-						</view>
-						<view class="abnormal">
-							异常
-						</view>
-					</view>
-				</view>
-				<view class="item  flex justify-between align-center">
-					<text>是否在有效检测期内</text>
-					<view class="right-btn flex justify-between align-center">
-						<view class="normal">
-							正常
-						</view>
-						<view class="abnormal">
+						<view class="abnormal" :class="item.status==2?'fix-choosed':''" @tap="switchAbNormal(index)">
 							异常
 						</view>
 					</view>
@@ -81,10 +37,10 @@
 		</view>
 		<view class="bottom-btn">
 		<view class="btn-area flex align-center justify-between">
-			<view class="fix-btn" @tap="handleFix()">
+			<view class="fix-btn" :class="fixActive?'fix-active':''" @tap="handleFix()">
 				报修
 			</view>
-			<view class="normal-btn" @tap="handleNormal()">
+			<view class="normal-btn" :class="normalActive?'normal-active':''" @tap="handleNormal()">
 				正常
 			</view>
 		</view>
@@ -96,13 +52,25 @@
 	export default {
 		data() {
 			return {
+				deviceName:'',
 				deviceId:null,
+				taskId:null,
+				campusName:'', //校区
+				buildingName:'',//楼宇
+				floorName:'',//楼层
+				roomName:'',//房间
+				targetInfoList:[{}],//指标信息
 			};
 		},
 		onLoad(options) {
 			if(options.deviceId){
 				console.log('接收到deviceId：' + options.deviceId)
 				this.deviceId = options.deviceId
+			}
+			if(options.taskId){
+				console.log('接收到taskId：' + options.taskId)
+				this.taskId = options.taskId
+				this.getCurrentTaskDeviceDetail();
 			}
 			
 		},
@@ -112,23 +80,137 @@
 		onShow() {
 		
 		},
-		methods: {
-			handleFix(){
-				uni.navigateTo({
-					url: "./devicesFix"
+		computed:{
+			normalActive(){
+				let index = this.targetInfoList.findIndex((value, index, arr) => {
+					return value.status == 2
 				})
+				if(index==-1){
+					return true;
+				}else{
+					return false;
+				}
+			},
+			fixActive(){
+				let index = this.targetInfoList.findIndex((value, index, arr) => {
+					return value.status == 2
+				})
+				if(index!=-1){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		},
+		methods: {
+			switchNormal(index){
+				this.targetInfoList[index].status=1;
+			},
+			switchAbNormal(index){
+				this.targetInfoList[index].status=2;
+			},
+			handleFix(){
+				let index = this.targetInfoList.findIndex((value, index, arr) => {
+					return value.status == 2
+				})
+				if(index!=-1){
+					let deviceInfo = {
+						deviceId:this.deviceId,
+						taskId:this.taskId,
+						deviceName:this.deviceName,
+						buildingName:this.buildingName,
+						floor:this.floorName,
+						room:this.roomName,
+						door:this.door,
+						deviceSn:this.deviceSn 
+					};
+						uni.navigateTo({
+							url: "./devicesFix?deviceInfo=" + JSON.stringify(deviceInfo)
+						})
+				}else{
+					uni.showToast({
+						icon: "none",
+						title: "各项指标均正常，请点击正常按钮进行提交"
+					})
+				}
+				
 			},
 			handleNormal(){
-				
-			}
+				let index = this.targetInfoList.findIndex((value, index, arr) => {
+					return value.status == 2
+				})
+				if(index==-1){
+					this.deviceNormal()
+				}else{
+					uni.showToast({
+						icon: "none",
+						title: this.targetInfoList[index].targetName+'异常,'+"请确认该指标状态"
+					})
+				}
+			},
+			
+			getCurrentTaskDeviceDetail: function() {
+				uni.showLoading();
+				let param = {
+					deviceId: this.deviceId,
+					taskId:this.taskId,
+				};
+				this.$api
+					.post('/firecontrol/api/wx/task/getCurrentTaskDeviceDetail', param, null)
+					.then(res => {
+						uni.hideLoading();
+						this.deviceName = res.deviceName
+						this.campusName = res.campusName
+						this.buildingName = res.buildingName
+						this.floorName = res.floorName
+						this.roomName = res.roomName
+						this.targetInfoList = res.targetInfoList
+						this.deviceSn = res.deviceSn
+			
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
+			deviceNormal: function() {
+				uni.showLoading();
+				let param = {
+					deviceId: this.deviceId,
+					taskId:this.taskId,
+				};
+				this.$api
+					.post('/firecontrol/api/wx/task/deviceNormal', param, null)
+					.then(res => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "提交成功"
+						})
+						setTimeout(function() {
+							uni.navigateBack()
+						}, 1000);
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
 		}
 	}
 </script>
 
 <style lang="scss">
 	.content {
-		padding-bottom: 176rpx;
-
+		padding-bottom: 180rpx;
 		.point_name {
 			margin-top: 56rpx;
 
@@ -209,6 +291,19 @@
 						color: #6190E8;
 						line-height: 54rpx;
 					}
+				
+						.choosed{
+							color: #FFFFFF;
+							background: #4B87FC;
+						}
+					
+				
+						.fix-choosed{
+							color: #FFFFFF;
+							background: #F32C2F;
+							border: 2rpx solid #F32C2F;
+						}
+					
 				}
 
 			}
@@ -228,25 +323,37 @@
 				width: 200rpx;
 				height: 100rpx;
 				text-align: center;
-				background: #EAF2FE;
-				border-radius: 8rpx;
-				border: 1rpx solid #4B87FC;
 				font-size: 36rpx;
 				font-weight: 500;
-				color: #4B87FC;
 				line-height: 100rpx;
+				color: #999999;
+				background: #F7F7F7;
+				border-radius: 8rpx;
+				border: 1rpx solid #979797;
 			}
-			.normal-btn {
+			.fix-active{
+				background: #EAF2FE;
+				border: 1rpx solid #4B87FC;
+				color: #4B87FC;
+			}
+			.normal-btn{
 				width: 460rpx;
 				height: 100rpx;
 				text-align: center;
-				background: #4B87FC;
-				border-radius: 8rpx;
 				font-size: 36rpx;
 				font-weight: 500;
-				color: #FFFFFF;
 				line-height: 100rpx;
+				color: #999999;
+				background: #F7F7F7;
+				border-radius: 8rpx;
+				border: 1rpx solid #979797;
 			}
+			.normal-active {
+				background: #4B87FC;
+				color: #FFFFFF;
+				border: 1rpx solid #4B87FC;
+			}
+			
 		}
 	}
 </style>
