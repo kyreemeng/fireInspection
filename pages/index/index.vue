@@ -1,15 +1,11 @@
 <template>
 	<view>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" >
-			<block slot="content">登录</block>
-		</cu-custom>
 	</view>
 	<view class="content">
-		<view>
-			登录页面
-			<button class="getbtn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">允许获取</button>
-		</view>
+			<open-data class="avatar" type="userAvatarUrl"></open-data>	
+			<button class="getbtn"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信登录</button>
+		
 	</view>
 	</view>
 </template>
@@ -77,6 +73,17 @@
 							this.accessToken = res.accessToken
 							uni.setStorageSync('accessToken', this.accessToken)
 							console.log('存储accessToken：'+this.accessToken )
+							uni.showToast({
+								icon: "none",
+								title: "登录成功"
+							})
+							setTimeout(function() {
+								uni.redirectTo({
+									url:'/pages/inspects/index'
+								})
+							}, 1000);
+							
+							
 					})
 					.catch(err => {
 						uni.hideLoading();
@@ -105,23 +112,22 @@
 		align-items: center;
 		justify-content: center;
 	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
+	.avatar{
+		margin-top: 154rpx;
+		width: 128rpx;
+		height: 128rpx;
+		border-radius:50%;	
+  overflow: hidden;
 	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
+	.getbtn{
+		margin-top: 50rpx;
+		width: 626rpx;
+		height: 100rpx;
+		background: #4B87FC;
+		border-radius: 8rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #FFFFFF;
+		line-height: 100rpx;
 	}
 </style>
