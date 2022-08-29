@@ -11,10 +11,10 @@
 						<text>所在位置</text><text class="value">{{campusName}}{{buildingName}}{{floorName}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>具体位置</text><text class="value">{{roomName}}</text>
+						<text>具体位置</text><text class="value">{{roomName}}{{door==1?'室内':'室外'}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>设备编号</text><text class="value">{{deviceId}}</text>
+						<text>设备编号</text><text class="value">{{deviceSn}}</text>
 					</view>
 				</view>
 			</view>
@@ -59,6 +59,8 @@
 				buildingName:'',//楼宇
 				floorName:'',//楼层
 				roomName:'',//房间
+				door:null,//1 室内，2室外
+				deviceSn:null, //设备编码
 				targetInfoList:[{}],//指标信息
 			};
 		},
@@ -164,6 +166,7 @@
 						this.buildingName = res.buildingName
 						this.floorName = res.floorName
 						this.roomName = res.roomName
+						this.door = res.door
 						this.targetInfoList = res.targetInfoList
 						this.deviceSn = res.deviceSn
 			
