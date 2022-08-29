@@ -1,7 +1,6 @@
 <template>
 	<view class="content">
 		<view class="info">
-			<image @tap="handleMessage()" class="msg" src="../../static/image/my/icon_message.png" mode="aspectFit"></image>
 			<view class="detail flex  align-center">
 				<image class="avatar" :src="avatarUrl" mode="aspectFit"></image>
 				<view class="word">
@@ -12,6 +11,11 @@
 						{{phone}}
 					</view>
 				</view>
+				<image @tap="handleMessage()" class="msg" src="../../static/image/my/icon_message.png" mode="aspectFit"></image>
+				
+			</view>
+			<view class="toData">
+				<text @tap="handleData()">查看数据概览></text>
 			</view>
 		</view>
 		<view class="process">
@@ -55,6 +59,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="logOut" @tap="handleOut">
+			退出登录
+		</view>
 	</view>
 </template>
 
@@ -92,6 +99,17 @@
 			handleMessage(){
 				uni.navigateTo({
 					url:'message'
+				})
+			},
+			handleData(){
+				uni.navigateTo({
+					url:'dataView'
+				})
+			},
+			handleOut(){
+				uni.removeStorageSync('accessToken')
+				uni.redirectTo({
+					url:'/pages/index/index'
 				})
 			},
 			getUserInfo: function() {
@@ -155,17 +173,21 @@
 	
 	}
 .content{
+	padding-bottom: 10rpx;
 	.info{
 		width: 100%;
-		height: 240rpx;
-		margin-top: 54rpx;
+		height: 254rpx;
+		margin-top: 40rpx;
 		background: #FFFFFF;
 		border-radius: 8rpx;
 		padding: 26rpx 26rpx 66rpx 32rpx;
+		position: relative;
 		.msg{
+			position: absolute;
 			width: 39rpx;
 			height: 44rpx;
-			margin-left: 592rpx;
+			top: 26rpx;
+			left:622rpx;
 		}
 		.avatar{
 			width: 120rpx;
@@ -196,6 +218,7 @@
 					font-weight: 500;
 					color: #37A1FA;
 					line-height: 36rpx;
+					max-width: 320rpx;
 				}
 			}
 			.tel{
@@ -205,6 +228,18 @@
 				line-height: 37rpx;
 				margin-top: 16rpx;
 			}
+		}
+		.toData{
+			margin-top: 30rpx;
+			width: 630rpx;
+			border-top: 1rpx solid  #E2E4EA;
+			height: 72rpx;
+			font-size: 26rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #4B87FC;
+			line-height: 72rpx;
+			text-align: center;
 		}
 	}
 	.process{
@@ -246,6 +281,18 @@
 				margin-top: 40rpx;
 			}
 		}
+	}
+	.logOut{
+		margin: 66rpx auto 30rpx auto;
+		width: 690rpx;
+		height: 100rpx;
+		background: #FFFFFF;
+		border-radius: 8rpx;
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #F32C2F;
+		line-height: 100rpx;
+		text-align: center;
 	}
 }
 </style>

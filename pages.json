@@ -165,6 +165,15 @@
 				"navigationBarTitleText": "登录"
 			}
 		}
+        ,{
+            "path" : "pages/my/dataView",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "数据概览",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "default",

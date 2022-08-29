@@ -40,7 +40,7 @@ export default {
 
 		if (uni.getStorageSync('accessToken')) {
 			this.config.header['accessToken'] = uni.getStorageSync('accessToken')
-		}
+		} 
 
 		return new Promise((resolve, reject) => {
 			let _config = null
