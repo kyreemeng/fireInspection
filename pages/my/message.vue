@@ -1,21 +1,23 @@
 <template>
 	<view class="fixensure-content">
 		<view class="choose flex justify-between align-center ">
-				<picker class="picker  " @change="BuildingChange" :value="building" :range="buildingList">
+				<picker class="picker  " @change="TypeChange" :value="typeIndex" :range="typeList">
 					<text>
-						{{building>-1?buildingList[building]:'消息类型'}}
+						{{typeIndex>-1?typeList[typeIndex]:'消息类型'}}
 					</text>
 					<text class="box-icon cuIcon-triangledownfill text-grey" ></text>
 				</picker>
-				<picker class="picker  " @change="LayerChange" :value="layer" :range="LayerList">
+				<picker class="picker"  mode="date" :value="noticeTime"  :end="currentDate" @change="DateChange">
 					<text >
-						{{layer>-1?LayerList[layer]:'通知日期'}}
+						{{noticeTime?noticeTime:'通知日期'}}
 					</text>
 					<text class="box-icon cuIcon-triangledownfill text-grey" ></text>
 				</picker>
 		</view>
 		<view class="list" >
-			<view class="item" v-for="item in 2" :key="item">
+			<mescroll-uni :down="downOption" @down="downCallback" :up="upOption" @up="upcallback" @init="initMescroll" :fixed="true"
+			 :top="mescrollTop+'px'" >
+			<view class="item" v-for="(item,index) in messageList" :key="index">
 				<view class="title flex align-center">
 					<text class="icon cuIcon-title"></text>
 					<text class="value">巡检任务下达通知</text>
@@ -39,6 +41,7 @@
 					</view>
 				</view>
 			</view>
+			</mescroll-uni>
 		</view>
 	
 	</view>
@@ -46,28 +49,108 @@
 </template>
 
 <script>
+	import MescrollUni from '@/components/mescroll-uni/mescroll-uni.vue';
 	export default {
+		components: {
+			MescrollUni
+		},
 	data() {
 		return {
-			building: -1,
-			buildingList: ['1栋', '2栋', '3栋'],
-			layer: -1,
-			LayerList: ['2022-07-05', '2022-07-06', '2022-07-08'],
+			typeIndex: -1,
+			typeList: ['其他', '任务工单'],
+			messageType:null,
+			downOption: {
+				auto: false
+			},
+			upOption: {
+				auto: false
+			},
+			mescroll: null,
+			mescrollTop:0,
+			mescrollBottom:0,
+			currentDate:null,
+			noticeTime:null,
+			messageList:[]
 		};
 	},
+	onLoad() {
+		let date = new Date();
+		let month = date.getMonth() + 1;
+		let day = date.getDate();
+		let date2 = new Date(date);
+		date2.setDate(day - 6);
+		let month2 = date2.getMonth() + 1;
+		let day2 = date2.getDate();
+		this.currentDate = date.getFullYear() + "-" + (month > 9 ? month : ('0' + month)) + "-" + (day > 9 ? day : ('0' +
+			day));
+		
+		this.mescrollTop = uni.upx2px(90);
+	},
+	onReady() {
+	
+	},
+	onShow() {
+		
+	},
 	methods: {
-		BuildingChange(e) {
-			this.building = e.detail.value
-			console.log(this.buildingList[this.building])
+		TypeChange(e) {
+			this.typeIndex = e.detail.value
+			this.messageType = this.typeList[this.typeIndex]
+			console.log('messageType:'+this.messageType)
+			this.mescroll.resetUpScroll();
 		},
-		LayerChange(e) {
-			this.layer = e.detail.value
-			console.log(this.LayerList[this.layer])
+		DateChange(e) {
+			this.noticeTime = e.detail.value
+			this.mescroll.resetUpScroll();
+			console.log(this.noticeTime)
 		},
 		handleDetail(){
 		uni.navigateTo({
 			url:'fixDetail'
 		})
+		},
+		initMescroll: function(mescroll) {
+			this.mescroll = mescroll;
+			this.mescroll.resetUpScroll();
+		},
+		upcallback: function(mescroll) {
+			uni.showLoading();
+		let param = {
+			pageNum: mescroll.num,
+			pageSize: mescroll.size,
+		};
+		if(this.messageType){
+			param.messageType = this.messageType
+			
+		}
+		if(this.noticeTime){
+			param.noticeTime = this.noticeTime
+			
+		}
+			this.$api
+				.post('/firecontrol/api/wx/message/getMessagePage', param, null)
+				.then(res => {
+					uni.hideLoading();
+						if (mescroll.num == 1) {
+							this.messageList = res.content;
+						} else {
+							this.messageList = this.messageList.concat(res.content);
+						}
+						mescroll.endSuccess(res.content.length, res.content.length >= mescroll.size);
+					
+				})
+				.catch(err => {
+					mescroll.endErr();
+					uni.hideLoading();
+					uni.showToast({
+						icon: "none",
+						title: "接口请求异常"
+					})
+				});
+		
+		},
+		downCallback: function(mescroll) {
+			mescroll.resetUpScroll();
 		},
 	}
 	}
@@ -95,10 +178,10 @@
 		}
 		.list{
 			width: 100%;
-			padding: 0 32rpx;
 			.item{
 				margin-top: 30rpx;
 				width: 100%;
+				padding: 0 32rpx;
 				background: #FFFFFF;
 				border-radius: 8rpx;
 				.title{
