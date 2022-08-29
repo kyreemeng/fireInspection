@@ -79,7 +79,7 @@
 							})
 							setTimeout(function() {
 								uni.redirectTo({
-									url:'/pages/inspects/index'
+									url:'/pages/my/index'
 								})
 							}, 1000);
 							

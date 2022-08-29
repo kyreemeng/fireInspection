@@ -1,6 +1,13 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText":"我的",
+				"enablePullDownRefresh": false
+			}
 		
+		},
 		
 		{
 			"path": "pages/inspects/index",
@@ -13,13 +20,6 @@
 			"path": "pages/protect/index",
 			"style": {
 				"navigationBarTitleText": "维保",
-				"enablePullDownRefresh": false
-			}
-
-		}, {
-			"path": "pages/my/index",
-			"style": {
-				"navigationBarTitleText":"我的",
 				"enablePullDownRefresh": false
 			}
 
@@ -182,7 +182,13 @@
 		"fontSize": "10px",
 		"iconWidth": "24px",
 		"spacing": "3px",
-		"list": [{
+		"list": [
+			{
+				"pagePath": "pages/my/index",
+				"iconPath": "static/image/tab/my.png",
+				"selectedIconPath": "static/image/tab/my_selected.png",
+				"text": "我的"
+			},{
 			"pagePath": "pages/inspects/index",
 			"iconPath": "static/image/tab/inspects.png",
 			"selectedIconPath": "static/image/tab/inspects_selected.png",
@@ -193,12 +199,6 @@
 			"iconPath": "static/image/tab/protect.png",
 			"selectedIconPath": "static/image/tab/protect_selected.png",
 			"text": "维保"
-		},
-		{
-			"pagePath": "pages/my/index",
-			"iconPath": "static/image/tab/my.png",
-			"selectedIconPath": "static/image/tab/my_selected.png",
-			"text": "我的"
 		}]
 	}
 }
