@@ -39,8 +39,12 @@ export default {
 		options.method = options.method || this.config.method
 
 		if (uni.getStorageSync('accessToken')) {
-			this.config.header['accessToken'] = uni.getStorageSync('accessToken')
-		} 
+			this.config.header['Authorization'] = 'Bearer '+uni.getStorageSync('accessToken')
+		} else{
+			uni.redirectTo({
+				url:'/pages/index/index'
+			})
+		}
 
 		return new Promise((resolve, reject) => {
 			let _config = null
@@ -57,16 +61,16 @@ export default {
 				}
 
 				if (statusCode === 200) { //成功
-				resolve(response.data.body);
+				// resolve(response.data.body);
 				
-					// if (response.data.code == 200||response.data.succeed) {
-					// 	resolve(response.data.body);
-					// } else {
-					// 	uni.showToast({
-					// 		title: response.data.message,
-					// 		icon: 'none'
-					// 	})
-					// }
+					if (response.data.code == 200||response.data.succeed) {
+						resolve(response.data.body);
+					} else {
+						uni.showToast({
+							title: response.data.message,
+							icon: 'none'
+						})
+					}
 
 				} else if (statusCode === 401){   //用户信息失效
 				// 重新打开登录页面进行登录

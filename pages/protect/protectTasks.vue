@@ -115,11 +115,21 @@
 			},
 			handleScan(){
 				uni.scanCode({
-					success: function (res) {
-						console.log('条码类型：' + res.scanType);
-						console.log('条码内容：' + res.result);
-					}
-				});
+				onlyFromCamera: true,
+						success: function (res) {
+							console.log('条码类型：' + res.scanType);
+							console.log('条码内容：' + res.result);
+							uni.showToast({
+								title: '扫码成功'
+							});
+							setTimeout(() => {
+								uni.navigateTo({
+									url:'../inspects/point?pointId='+res.result	
+								})
+							}, "500");
+						
+						}
+					});
 			},
 			handlePoint(){
 				uni.navigateTo({

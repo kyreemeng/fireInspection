@@ -91,8 +91,9 @@
 				otherDeviceList:[]//其它设备列表
 			};
 		},
-		onLoad() {
-			this.getPointDetail(12345)
+		onLoad(options) {
+			console.log('接收到pointId：' + options.pointId)
+			this.getPointDetail(options.pointId)
 		},
 		onReady() {
 			

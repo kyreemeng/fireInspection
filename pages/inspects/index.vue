@@ -47,26 +47,24 @@
 		},
 		methods:{
 			handleScan(){
-				uni.navigateTo({
-					url:'point'
-				})
 				
-			// 	uni.scanCode({
-			// onlyFromCamera: true,
-			// 		success: function (res) {
-			// 			console.log('条码类型：' + res.scanType);
-			// 			console.log('条码内容：' + res.result);
-			// 			uni.showToast({
-			// 				title: '扫码成功'
-			// 			});
-			// 			setTimeout(() => {
-			// 				uni.navigateTo({
-			// 					url:'point'
-			// 				})
-			// 			}, "500");
+				
+				uni.scanCode({
+			onlyFromCamera: true,
+					success: function (res) {
+						console.log('条码类型：' + res.scanType);
+						console.log('条码内容：' + res.result);
+						uni.showToast({
+							title: '扫码成功'
+						});
+						setTimeout(() => {
+							uni.navigateTo({
+								url:'point?pointId='+res.result	
+							})
+						}, "500");
 					
-			// 		}
-			// 	});
+					}
+				});
 			
 				
 			},
