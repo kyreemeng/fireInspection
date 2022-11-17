@@ -1,12 +1,12 @@
 <template>
 	<view>
-	<view>
-	</view>
-	<view class="content">
-			<open-data class="avatar" type="userAvatarUrl"></open-data>	
-			<button class="getbtn"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信登录</button>
-		
-	</view>
+		<view>
+		</view>
+		<view class="content">
+			<open-data class="avatar" type="userAvatarUrl"></open-data>
+			<button class="getbtn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信登录</button>
+
+		</view>
 	</view>
 </template>
 
@@ -14,7 +14,7 @@
 	export default {
 		data() {
 			return {
-				
+
 			}
 		},
 		onLoad() {
@@ -24,14 +24,14 @@
 			this.getLogin()
 		},
 		methods: {
-			getLogin(){
+			getLogin() {
 				uni.login({
 					provider: 'weixin',
 					success: (res) => {
 						let param = {
 							code: res.code,
 						}
-						console.log('code:',res.code)
+						console.log('code:', res.code)
 						this.wxCode = res.code
 					},
 					fail: (res) => {
@@ -39,7 +39,7 @@
 						uni.hideLoading();
 					}
 				})
-				
+
 			},
 			getPhoneNumber: function(e) {
 				console.log(e.detail.errMsg);
@@ -49,41 +49,41 @@
 					this.encryptedData = e.detail.encryptedData;
 					this.iv = e.detail.iv;
 					this.getinfo();
-			
+
 				} else {
 					uni.showToast({
 						title: '您拒绝了授权获取您的手机号码',
 						icon: 'none'
 					})
-			
+
 				}
-			
+
 			},
 			getinfo: function() {
 				uni.showLoading();
 				let param = {
 					encryptedData: this.encryptedData,
 					iv: this.iv,
-					wxCode:this.wxCode
+					wxCode: this.wxCode
 				}
 				this.$api
 					.post('/firecontrol/api/wx/user/phoneLogin', param, null)
 					.then(res => {
 						uni.hideLoading();
-							this.accessToken = res.accessToken
-							uni.setStorageSync('accessToken', this.accessToken)
-							console.log('存储accessToken：'+this.accessToken )
-							uni.showToast({
-								icon: "none",
-								title: "登录成功"
+						this.accessToken = res.accessToken
+						uni.setStorageSync('accessToken', this.accessToken)
+						console.log('存储accessToken：' + this.accessToken)
+						
+						uni.showToast({
+							icon: "none",
+							title: "登录成功"
+						})
+						console.log("登录成功")
+						setTimeout(()=> {
+							uni.reLaunch({
+								url: '/pages/my/index'
 							})
-							setTimeout(function() {
-								uni.redirectTo({
-									url:'/pages/my/index'
-								})
-							}, 1000);
-							
-							
+						}, 500);
 					})
 					.catch(err => {
 						uni.hideLoading();
@@ -92,7 +92,7 @@
 							title: "接口请求异常"
 						})
 					});
-			
+
 			},
 
 		}
@@ -104,22 +104,25 @@
 		background: url(https://kyree.me/img/bg_login.png) no-repeat center center;
 		background-size: cover;
 		background-attachment: fixed;
-	
+
 	}
+
 	.content {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 	}
-	.avatar{
+
+	.avatar {
 		margin-top: 154rpx;
 		width: 128rpx;
 		height: 128rpx;
-		border-radius:50%;	
-  overflow: hidden;
+		border-radius: 50%;
+		overflow: hidden;
 	}
-	.getbtn{
+
+	.getbtn {
 		margin-top: 50rpx;
 		width: 626rpx;
 		height: 100rpx;

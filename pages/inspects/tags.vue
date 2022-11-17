@@ -96,7 +96,15 @@
 			console.log(this.TabList[e.currentTarget.dataset.id])
 			this.TabCur = e.currentTarget.dataset.id;
 			this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
-			this.bindingStatus = this.TabCur+1
+			console.log(this.TabCur)
+			if(this.TabCur==0){
+				this.bindingStatus=2
+			}else if(this.TabCur==1){
+				this.bindingStatus=1
+			}else {
+				console.log('TabCur:'+this.TabCur)
+			}
+			// this.bindingStatus = this.TabCur+1
 			this.mescroll.resetUpScroll();
 		},
 		//选择楼宇

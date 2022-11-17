@@ -74,6 +74,7 @@ export default {
 
 				} else if (statusCode === 401){   //用户信息失效
 				// 重新打开登录页面进行登录
+				console.log('用户信息失效')
 				uni.redirectTo({
 					url:'/pages/index/index'
 				})
