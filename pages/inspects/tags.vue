@@ -111,8 +111,10 @@
 		BuildingChange(e) {
 			this.buildingIndex = e.detail.value
 			this.buildingSn = this.buildingList[this.buildingIndex].buildingId
-			this.getFloorList();
+			this.getFloorList(this.buildingSn);
+			this.floorIndex = -1
 			this.mescroll.resetUpScroll();
+			console.log(this.buildingList[this.buildingIndex].buildingId)
 			console.log(this.buildingList[this.buildingIndex].buildingName)
 		},
 		//选择楼层
@@ -184,9 +186,11 @@
 				});
 		
 		},
-		getFloorList: function() {
+		getFloorList: function(buildingId) {
 			uni.showLoading();
-			let param = {};
+			let param = {
+				buildingId:buildingId
+			};
 			this.$api
 				.get('/firecontrol/api/wx/tag/getFloorList', param, null)
 				.then(res => {
