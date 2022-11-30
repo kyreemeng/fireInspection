@@ -42,7 +42,7 @@
 						<text class="num">{{currentMaintenanceTaskOverNum}}</text>
 					</view>
 					<view class="value  flex justify-between align-center">
-						<text>巡检员</text>
+						<text>维保员</text>
 						<text class="num">{{currentMaintenanceUserTotal}}</text>
 					</view>
 				</view>
