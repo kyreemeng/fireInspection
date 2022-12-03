@@ -87,14 +87,18 @@
 			return {
 				showfireFight:true,
 				showExtra:true,
-				taskId:null,
 				pointId:null,
+				taskId:null,
 				taskDetail:{},
 				fireDeviceList:[],
 				otherDeviceList:[],
 			};
 		},
 		onLoad(options) {
+			if(options.taskId){
+				console.log('接收到taskId：' + options.taskId)
+				this.taskId = options.taskId
+			}
 			if(options.pointId){
 				console.log('接收到pointId：' + options.pointId)
 				this.pointId = options.pointId
@@ -123,6 +127,7 @@
 			getCheckDetail: function() {
 				uni.showLoading();
 				let param = {
+					taskId:this.taskId,
 					pointId:this.pointId
 				};
 				this.$api
