@@ -124,7 +124,8 @@
 						floor:this.floorName,
 						room:this.roomName,
 						door:this.door,
-						deviceSn:this.deviceSn 
+						deviceSn:this.deviceSn,
+						targetInfoList:this.targetInfoList
 					};
 						uni.navigateTo({
 							url: "./devicesFix?deviceInfo=" + JSON.stringify(deviceInfo)

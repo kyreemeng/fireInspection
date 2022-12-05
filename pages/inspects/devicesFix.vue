@@ -27,16 +27,17 @@
 						<text class="box-icon cuIcon-round text-blue"></text>
 						<text class="box-title">拍照取证</text>
 					</view>
-					<view class="name flex  align-center" >
+					<view class="name flex  align-center">
 						<view class="action">
 							{{imgList.length}}/6
 						</view>
-					</view>	
+					</view>
 				</view>
 				<view class="cu-form-group" style="padding-top: 20rpx;">
 					<view class="grid col-3 grid-square flex-sub">
-						<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
-						 <image :src="imgList[index]" mode="aspectFill"></image>
+						<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage"
+							:data-url="imgList[index]">
+							<image :src="imgList[index]" mode="aspectFill"></image>
 							<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
 								<text class='cuIcon-close'></text>
 							</view>
@@ -46,7 +47,7 @@
 						</view>
 					</view>
 				</view>
-				<view class="extra-dev flex justify-between align-center"   >
+				<view class="extra-dev flex justify-between align-center">
 					<view class="desc flex  align-center">
 						<text class="box-icon cuIcon-round text-blue"></text>
 						<text class="box-title">备注信息</text>
@@ -55,19 +56,19 @@
 					</view>
 				</view>
 				<view class="remarks">
-					<input type="text" v-model="memo"  placeholder="请输入备注信息"  >
+					<input type="text" v-model="memo" placeholder="请输入备注信息">
 				</view>
 			</view>
 		</view>
-		
-	
-	
-		
-	<view class="bottom-btn">
-		<view class="btn" @tap="handleRepair()">
-			确认报修
+
+
+
+
+		<view class="bottom-btn">
+			<view class="btn" @tap="handleRepair()">
+				确认报修
+			</view>
 		</view>
-	</view>
 	</view>
 </template>
 
@@ -75,42 +76,47 @@
 	export default {
 		data() {
 			return {
-				deviceInfo:{},
-				deviceId:null,
-				taskId:null,
-				imgList: [],
-				memo:null,
+				baseUrl: this.$api.config.baseUrl,
+				deviceInfo: {},
+				deviceId: null,
+				taskId: null,
+				imgList:[],
+				imagesUrl:[],
+				memo: null,
+				targetInfoList: {},
+				
 			};
 		},
 		onLoad(options) {
 			if (options.deviceInfo) {
 				this.deviceInfo = JSON.parse(options.deviceInfo)
 				this.deviceId = JSON.parse(options.deviceInfo).deviceId
-				console.log('fix接收到deviceId：'+this.deviceId)
+				this.targetInfoList = JSON.parse(options.deviceInfo).targetInfoList
+				console.log('fix接收到deviceId：' + this.deviceId)
 			}
-			if(JSON.parse(options.deviceInfo).taskId){
+			if (JSON.parse(options.deviceInfo).taskId) {
 				this.taskId = JSON.parse(options.deviceInfo).taskId
 				console.log('fix接收到taskId：' + this.taskId)
 			}
-			
+
 		},
 		onReady() {
-			
+
 		},
 		onShow() {
-			
+
 		},
 		methods: {
 			handleRepair() {
-				if(this.imgList.length<1){
+				if (this.imgList.length < 1) {
 					uni.showToast({
 						icon: "none",
 						title: "请上传图片"
 					})
-				}else{
+				} else {
 					this.deviceRepair();
 				}
-				
+
 			},
 			ChooseImage() {
 				uni.chooseImage({
@@ -124,6 +130,7 @@
 						} else {
 							this.imgList = res.tempFilePaths
 						}
+
 						this.uploadFileSingle(res.tempFilePaths[0]);
 					}
 				});
@@ -140,11 +147,14 @@
 					},
 					success: result => {
 						if (result.data) {
-							console.log('图片地址：'+result.data);
-							// let res = JSON.parse(result.data);
-							// if (res.error_code == 0) {
-							// 	that.licensePic = res.data.file_path;
-							// }
+							console.log('图片地址：' + result.data);
+							let resUrl = result.data.split()
+							if (this.imagesUrl.length != 0) {
+								this.imagesUrl = this.imagesUrl.concat(resUrl)
+							} else {
+								this.imagesUrl = resUrl
+							}
+							console.log('imagesUrl：' +this.imagesUrl)
 						}
 						uni.hideLoading();
 					},
@@ -169,6 +179,7 @@
 					success: res => {
 						if (res.confirm) {
 							this.imgList.splice(e.currentTarget.dataset.index, 1)
+							this.imagesUrl.splice(e.currentTarget.dataset.index, 1)
 						}
 					}
 				})
@@ -177,12 +188,13 @@
 				uni.showLoading();
 				let param = {
 					deviceId: this.deviceId,
-					images:this.imgList,
+					images: this.imagesUrl,
+					targetInfoList: this.targetInfoList
 				};
-				if(this.taskId){
+				if (this.taskId) {
 					param.taskId = this.taskId
 				}
-				if(this.memo){
+				if (this.memo) {
 					param.memo = this.memo
 				}
 				this.$api
@@ -195,10 +207,10 @@
 						})
 						setTimeout(function() {
 							uni.redirectTo({
-								url:'fixApply'
+								url: 'fixApply'
 							})
 						}, 1000);
-			
+
 					})
 					.catch(err => {
 						uni.hideLoading();
@@ -207,9 +219,9 @@
 							title: "接口请求异常"
 						})
 					});
-			
+
 			},
-			
+
 		}
 	}
 </script>
@@ -217,6 +229,7 @@
 <style lang="scss">
 	.content {
 		padding-bottom: 176rpx;
+
 		.point_name {
 			margin-top: 56rpx;
 
@@ -257,49 +270,58 @@
 				}
 			}
 		}
-		.fix-info{
+
+		.fix-info {
 			width: 686rpx;
 			margin-top: 56rpx;
 			border-radius: 8rpx;
 			padding-bottom: 20rpx;
-			.list{
+
+			.list {
 				margin-top: 24rpx;
-				.fireFight-dev,.extra-dev{
+
+				.fireFight-dev,
+				.extra-dev {
 					width: 100%;
 					height: 110rpx;
 					padding: 32rpx 28rpx;
 					background: #FFFFFF;
-					border-bottom: 1rpx solid  #E5E5E5;
+					border-bottom: 1rpx solid #E5E5E5;
 					line-height: 46rpx;
-					.box-title{
+
+					.box-title {
 						margin-left: 12rpx;
 						font-size: 32rpx;
 						font-weight: 500;
 						color: #354052;
 					}
-					.desc{
-						.box-icon{
+
+					.desc {
+						.box-icon {
 							font-size: 20rpx;
 						}
 					}
-					
-					.name{
-						.box-icon{
+
+					.name {
+						.box-icon {
 							font-size: 38rpx;
 						}
 					}
 				}
-				.remarks{
+
+				.remarks {
 					width: 100%;
-					padding: 30rpx  30rpx;
+					padding: 30rpx 30rpx;
 					background: #FFFFFF;
-					input{
+
+					input {
 						text-align: left;
 					}
 
 				}
 			}
 		}
+
 		.title {
 			font-size: 32rpx;
 			font-weight: 600;
@@ -307,7 +329,7 @@
 
 		}
 
-		.bottom-btn{
+		.bottom-btn {
 			position: fixed;
 			bottom: 0;
 			left: 0;
@@ -317,7 +339,8 @@
 			padding: 20rpx 30rpx;
 			background: #fff;
 			box-shadow: 0 -5rpx 9rpx 0 rgba(239, 243, 255, 1);
-			.btn{
+
+			.btn {
 				width: 100%;
 				height: 100rpx;
 				text-align: center;
