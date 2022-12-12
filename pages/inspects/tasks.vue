@@ -14,10 +14,10 @@
 				<view class="date">
 					{{item.releaseTime}}
 				</view>
-				<view class="title flex justify-between align-center" @tap="handlePoint(item.taskId,item.pointId)">
+				<view class="title flex justify-between align-center" >
 					<text>{{item.pointName}}</text>
 				</view>
-				<view class="info" @tap="handlePoint(item.taskId,item.pointId)">
+				<view class="info" >
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
 						<text class="value">{{item.buildingName}}/{{item.floorName}}</text>
@@ -41,10 +41,10 @@
 				<view class="date">
 					{{item.releaseTime}}
 				</view>
-				<view class="title flex justify-between align-center" @tap="handlePoint(item.taskId,item.pointId)">
+				<view class="title flex justify-between align-center" >
 					<text>{{item.pointName}}</text>
 				</view>
-				<view class="info" @tap="handlePoint(item.taskId,item.pointId)">
+				<view class="info" >
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
 						<text class="value">{{item.buildingName}}/{{item.floorName}}</text>
@@ -114,10 +114,20 @@
 				this.mescroll.resetUpScroll();
 			},
 			handleScan(){
-				uni.scanCode({
+			uni.scanCode({
+			onlyFromCamera: true,
 					success: function (res) {
 						console.log('条码类型：' + res.scanType);
 						console.log('条码内容：' + res.result);
+						uni.showToast({
+							title: '扫码成功'
+						});
+						setTimeout(() => {
+							uni.navigateTo({
+								url:'point?targetSn='+res.result	
+							})
+						}, "500");
+					
 					}
 				});
 			},

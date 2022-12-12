@@ -92,8 +92,8 @@
 			};
 		},
 		onLoad(options) {
-			console.log('接收到pointId：' + options.pointId)
-			this.getPointDetail(options.pointId)
+			console.log('接收到targetSn：' + options.targetSn)
+			this.getPointDetail(options.targetSn)
 		},
 		onReady() {
 			
@@ -113,10 +113,10 @@
 					url:"./pointDetail?deviceId="+deviceId
 				})
 			},
-			getPointDetail: function(pointId) {
+			getPointDetail: function(targetSn) {
 				uni.showLoading();
 				let param = {
-					pointId:pointId
+					targetSn:targetSn
 				};
 				this.$api
 					.post('/firecontrol/api/wx/patrol/getPointDetail', param, null)

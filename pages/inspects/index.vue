@@ -47,8 +47,6 @@
 		},
 		methods:{
 			handleScan(){
-				
-				
 				uni.scanCode({
 			onlyFromCamera: true,
 					success: function (res) {
@@ -59,7 +57,7 @@
 						});
 						setTimeout(() => {
 							uni.navigateTo({
-								url:'point?pointId='+res.result	
+								url:'point?targetSn='+res.result	
 							})
 						}, "500");
 					

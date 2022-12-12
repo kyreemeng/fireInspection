@@ -2,7 +2,8 @@
 	<view class="content">
 		<view class="info">
 			<view class="detail flex  align-center">
-				<image class="avatar" :src="avatarUrl" mode="aspectFit"></image>
+				<image class="avatar" v-if="avatarUrl" :src="avatarUrl" mode="aspectFit"></image>
+				<open-data class="avatar" v-else type="userAvatarUrl"></open-data>
 				<view class="word">
 					<view class="name flex  align-center">
 						<text class="value">{{nickname}}</text><text class="line">|</text><view class="tag">{{job}}</view>

@@ -124,7 +124,7 @@
 							});
 							setTimeout(() => {
 								uni.navigateTo({
-									url:'../inspects/point?pointId='+res.result	
+									url:'../inspects/point?targetSn='+res.result	
 								})
 							}, "500");
 						
