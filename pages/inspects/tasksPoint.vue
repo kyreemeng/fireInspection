@@ -99,11 +99,16 @@
 			// 	console.log('接收到taskId：' + options.taskId)
 			// 	this.taskId = options.taskId
 			// }
-			if(options.pointId){
-				console.log('接收到pointId：' + options.pointId)
-				this.pointId = options.pointId
-				this.getCheckDetail()
+			if(options.targetSn){
+				console.log('接收到targetSn：' + options.targetSn)
+				this.getCheckDetail(options.targetSn)
+			}else{
+				uni.showToast({
+					icon: "none",
+					title: "未接收到正确的targetSn"
+				})
 			}
+			
 			
 		},
 		onReady() {
@@ -124,10 +129,10 @@
 					url:"./devicesCheck?deviceId="+deviceId+'&taskId='+this.taskId
 				})
 			},
-			getCheckDetail: function() {
+			getCheckDetail: function(targetSn) {
 				uni.showLoading();
 				let param = {
-					pointId:this.pointId
+					targetSn:targetSn
 				};
 				this.$api
 					.post('/firecontrol/api/wx/task/getCurrentTaskCheckPointDetail', param, null)

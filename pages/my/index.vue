@@ -6,7 +6,7 @@
 				<open-data class="avatar" v-else type="userAvatarUrl"></open-data>
 				<view class="word">
 					<view class="name flex  align-center">
-						<text class="value">{{nickname}}</text><text class="line">|</text><view class="tag">{{job}}</view>
+						<text class="value">{{nickname}}</text><text class="line">|</text><view class="tag">{{roleName}}</view>
 					</view>
 					<view class="tel">
 						{{phone}}
@@ -71,7 +71,7 @@
 		data() {
 			return {
 				avatarUrl:'',
-				job:'职务',
+				roleName:'角色',
 				nickname:'昵称',
 				phone:'13000000000',
 				sex:'男',
@@ -122,7 +122,7 @@
 						uni.hideLoading();
 						this.avatarUrl = res.avatarUrl
 						this.nickname = res.nickname
-						this.job = res.job
+						this.roleName = res.roleName
 						this.phone = this.setMobile(res.phone)
 						
 					})
@@ -168,7 +168,7 @@
 
 <style lang="scss">
 	page {
-		background: url(https://kyree.me/img/bg_other.png) no-repeat center center;
+		background: url(http://221.226.18.75:8012/firecontrol/files/user/20230107/1673101241984/UX1QEzbZEswda58f00f502d8fcea4dd2a2ee5a3fc68d.png) no-repeat center center;
 		background-size: cover;
 		background-attachment: fixed;
 	
@@ -193,7 +193,8 @@
 		.avatar{
 			width: 120rpx;
 			height: 120rpx;
-			border-radius: 50%;
+			overflow: hidden;
+			border-radius: 50% !important;
 			border: 1rpx solid #E5E5E5;
 		}
 		.word{

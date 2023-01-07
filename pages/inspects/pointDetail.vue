@@ -23,7 +23,7 @@
 			</view>
 			<view class="item flex justify-between align-center">
 				<view class="left"><text>具体位置</text></view>
-				<view class="right"><text>{{floor}}{{room}}{{door==1?'室内':'室外'}}</text></view>
+				<view class="right"><text>{{floor?floor:''}}{{room?room:''}}{{door==1?'室内':'室外'}}</text></view>
 			</view>
 			<view class="item flex justify-between align-center">
 				<view class="left"><text>品牌</text></view>
@@ -47,7 +47,12 @@
 			</view>
 			<view class="item flex justify-between align-center">
 				<view class="left"><text>当前状态</text></view>
-				<view class="right"><text>{{deviceStatus==1?'可用':'不可用'}}</text></view>
+				<view class="right">
+					<text v-if="deviceStatus==1">可用</text>
+					<text v-else-if="deviceStatus==2">不可用</text>
+					<text v-else-if="deviceStatus==3">维修中</text>
+					<text v-else>{{deviceStatus}}</text>
+				</view>
 			</view>
 			<view class="item flex justify-between align-center">
 				<view class="left"><text>备注信息</text></view>
@@ -105,9 +110,15 @@
 			</mescroll-uni>
 		</view>
 		<view class="bottom">
-			<view class="btn" @tap="handleFix()">
-				报修
+			<view class=" btn-area flex align-center justify-between">
+				<view class="btn" @tap="handleFix()">
+					报修
+				</view>
+				<view class="btn" @tap="handleNormal()">
+					正常
+				</view>
 			</view>
+			
 		</view>
 	</view>
 </template>
@@ -134,7 +145,7 @@
 				model: "型号",
 				manufactureDate: '生产日期',
 				warrantyPeriod: "质保日期",
-				deviceStatus: 1, //1:可用 2：不可用
+				deviceStatus: 1, //1:可用 2：不可用，3维修中
 				deviceMemo: '', //备注信息
 				deviceSn:123456,//设备编号
 				downOption: {
@@ -266,6 +277,33 @@
 					});
 
 			},
+			handleNormal: function() {
+				uni.showLoading();
+				let param = {
+					deviceId: this.deviceId,
+					// taskId:this.taskId,
+				};
+				this.$api
+					.post('/firecontrol/api/wx/task/deviceNormal', param, null)
+					.then(res => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "提交成功"
+						})
+						setTimeout(function() {
+							uni.navigateBack()
+						}, 1000);
+					})
+					.catch(err => {
+						uni.hideLoading();
+						uni.showToast({
+							icon: "none",
+							title: "接口请求异常"
+						})
+					});
+			
+			},
 		}
 	}
 </script>
@@ -361,18 +399,22 @@
 			padding: 20rpx 30rpx;
 			background: #fff;
 			box-shadow: 0 -5rpx 9rpx 0 rgba(239, 243, 255, 1);
-
-			.btn {
+			.btn-area{
 				width: 100%;
-				height: 100rpx;
-				text-align: center;
-				background: #4B87FC;
-				border-radius: 8rpx;
-				font-size: 36rpx;
-				font-weight: 500;
-				color: #FFFFFF;
-				line-height: 100rpx;
+				.btn {
+					width: 45%;
+					height: 100rpx;
+					text-align: center;
+					background: #4B87FC;
+					border-radius: 8rpx;
+					font-size: 36rpx;
+					font-weight: 500;
+					color: #FFFFFF;
+					line-height: 100rpx;
+				}
 			}
+			
+			
 		}
 	}
 </style>

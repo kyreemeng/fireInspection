@@ -154,6 +154,7 @@
 				.post('/firecontrol/api/wx/tag/bindingTag', param, null)
 				.then(res => {
 					uni.hideLoading();
+					this.mescroll.resetUpScroll();
 					uni.showToast({
 						icon: "none",
 						title: "绑定成功"

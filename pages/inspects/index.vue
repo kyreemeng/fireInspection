@@ -93,7 +93,7 @@
 
 <style lang="scss">
 	page {
-		background: url(https://kyree.me/img/bg_other.png) no-repeat center center;
+		background: url(http://221.226.18.75:8012/firecontrol/files/user/20230107/1673101241984/UX1QEzbZEswda58f00f502d8fcea4dd2a2ee5a3fc68d.png) no-repeat center center;
 		background-size: cover;
 		background-attachment: fixed;
 	

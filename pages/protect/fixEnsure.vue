@@ -87,10 +87,10 @@
 		this.mescrollTop = uni.upx2px(90);
 	},
 	onReady() {
-		this.getDeviceTypeList()
+		
 	},
 	onShow() {
-		
+			this.getDeviceTypeList()
 	},
 	methods: {
 		DeviceChange(e) {

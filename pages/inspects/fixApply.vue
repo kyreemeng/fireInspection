@@ -12,7 +12,7 @@
 			 :top="mescrollTop+'px'" :bottom="mescrollBottom+'px'">
 			<view class="item" v-for="(item,index) in repairList" :key="index">
 				<view class="title flex justify-between align-center">
-					<text>灭火器001</text>
+					<text>{{item.deviceName}}</text>
 					<view class="review-btn" >{{item.auditStatus==1?'待审核':(item.auditStatus==2?'已审核':'审核不通过')}}</view>
 				</view>
 				<view class="info">
@@ -41,7 +41,7 @@
 			 :top="mescrollTop+'px'" :bottom="mescrollBottom+'px'">
 			<view class="item"  v-for="(item,index) in repairList" :key="index">
 				<view class="title flex justify-between align-center">
-					<text>灭火器002</text>
+					<text>{{item.deviceName}}</text>
 					<view class="to-review-btn">{{item.auditStatus==1?'待审核':(item.auditStatus==2?'已审核':'审核不通过')}}</view>					
 				</view>
 			<view class="info">

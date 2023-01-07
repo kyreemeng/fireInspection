@@ -101,7 +101,7 @@
 
 <style>
 	page {
-		background: url(https://kyree.me/img/bg_login.png) no-repeat center center;
+		background: url(http://221.226.18.75:8012/firecontrol/files/user/20230107/1673101188551/IzRwtFELX7Tf6d45067c9b2c3c0aabbb49aa3527f419.png) no-repeat center center;
 		background-size: cover;
 		background-attachment: fixed;
 

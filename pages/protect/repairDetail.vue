@@ -23,7 +23,7 @@
 						</view>
 					</view>
 					<view class="word flex justify-between align-center" v-show="showDetail">
-						<text>报修备注</text><text class="value">{{reportMemo}}</text>
+						<text>报修备注</text><text class="value">{{reportMemo?reportMemo:'无'}}</text>
 					</view>
 				</view>
 				<view class="show-area flex justify-center ">

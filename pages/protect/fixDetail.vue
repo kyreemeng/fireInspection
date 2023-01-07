@@ -23,7 +23,7 @@
 						</view>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>报修备注</text><text class="value">{{reportMemo}}</text>
+						<text>报修备注</text><text class="value">{{reportMemo?reportMemo:'无'}}</text>
 					</view>
 				</view>
 			</view>
@@ -156,8 +156,15 @@
 							title: "确认成功"
 						})
 						setTimeout(function() {
-							uni.navigateBack()
-						}, 1000);
+							uni.navigateBack({
+								delta: 1,
+									success: () => {
+										var pages = getCurrentPages();
+										var prePage = pages[pages.length - 2] //上一个页面
+										prePage.$vm.initMescroll()
+									}
+							})
+						}, 500);
 						
 					})
 					.catch(err => {

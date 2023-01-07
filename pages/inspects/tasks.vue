@@ -124,7 +124,7 @@
 						});
 						setTimeout(() => {
 							uni.navigateTo({
-								url:'point?targetSn='+res.result	
+								url:'tasksPoint?targetSn='+res.result	
 							})
 						}, "500");
 					
