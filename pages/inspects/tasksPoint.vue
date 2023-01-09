@@ -92,6 +92,7 @@
 				taskDetail:{},
 				fireDeviceList:[],
 				otherDeviceList:[],
+				targetSn:null,
 			};
 		},
 		onLoad(options) {
@@ -101,7 +102,7 @@
 			// }
 			if(options.targetSn){
 				console.log('接收到targetSn：' + options.targetSn)
-				this.getCheckDetail(options.targetSn)
+				this.targetSn=options.targetSn
 			}else{
 				uni.showToast({
 					icon: "none",
@@ -115,7 +116,7 @@
 		
 		},
 		onShow() {
-		
+			this.getCheckDetail(this.targetSn)
 		},
 		methods:{
 			handleFireFight(){

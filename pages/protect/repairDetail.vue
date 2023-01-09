@@ -187,9 +187,11 @@
 							icon: "none",
 							title: "更新成功"
 						})
-						setTimeout(function() {
-							uni.navigateBack()
-						}, 1000);
+						setTimeout(()=> {
+							uni.navigateBack({
+								delta: 2
+							});
+						}, 800);
 						
 					})
 					.catch(err => {

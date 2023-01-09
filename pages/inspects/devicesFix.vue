@@ -130,8 +130,11 @@
 						} else {
 							this.imgList = res.tempFilePaths
 						}
+						res.tempFilePaths.forEach((item)=>{
+						       this.uploadFileSingle(item);
+						})
 
-						this.uploadFileSingle(res.tempFilePaths[0]);
+						
 					}
 				});
 			},

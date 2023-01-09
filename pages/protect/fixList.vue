@@ -27,12 +27,12 @@
 			<view class="item" v-for="(item,index) in repairList " :key="index">
 				<view class="title flex justify-between align-center">
 					<text>灭火器001</text>
-					<view class="btn" @tap="handleDetail(item.repairFlowId)">查看</view>
+					<view class="btn" @tap="handleDetail(item.repairFlowId)" v-show="item.repairStatus!=3">查看</view>
 				</view>
 				<view class="info">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">{{item.campus}}{{item.building}}{{item.floor}}{{item.roomName}}</text>
+						<text class="value">{{item.campus}}{{item.building}}{{item.floor}}{{item.roomName?item.roomName:''}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">设备类型</text>

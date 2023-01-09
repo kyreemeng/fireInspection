@@ -109,7 +109,7 @@
             "path" : "pages/protect/fixDetail",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
+                "navigationBarTitleText": "报修详情",
                 "enablePullDownRefresh": false
             }
             

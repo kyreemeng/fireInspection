@@ -6,9 +6,9 @@
 					<text class="name">{{deviceName}}</text>
 					<text class="time">{{reportTime}}</text>
 				</view>
-				<view class="bottom flex-direction justify-between">
+				<view class="bottom flex-direction justify-between" >
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">{{deviceName}}{{buildingName}}{{floorName}}</text>
+						<text>所在位置</text><text class="value">{{buildingName}}{{floorName}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
 						<text>设备类型</text><text class="value">{{deviceType}}</text>
@@ -155,16 +155,11 @@
 							icon: "none",
 							title: "确认成功"
 						})
-						setTimeout(function() {
+						setTimeout(()=> {
 							uni.navigateBack({
-								delta: 1,
-									success: () => {
-										var pages = getCurrentPages();
-										var prePage = pages[pages.length - 2] //上一个页面
-										prePage.$vm.initMescroll()
-									}
-							})
-						}, 500);
+								delta: 2
+							});
+						}, 800);
 						
 					})
 					.catch(err => {

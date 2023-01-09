@@ -88,18 +88,19 @@
 				deviceNum:0,
 				pointStatus:1,
 				fireDeviceList:[], //消防设备列表
-				otherDeviceList:[]//其它设备列表
+				otherDeviceList:[],//其它设备列表
+				targetSn:null,
 			};
 		},
 		onLoad(options) {
 			console.log('接收到targetSn：' + options.targetSn)
-			this.getPointDetail(options.targetSn)
+			this.targetSn = options.targetSn
 		},
 		onReady() {
 			
 		},
 		onShow() {
-			
+			this.getPointDetail(this.targetSn)
 		},
 		methods:{
 			handleFireFight(){
