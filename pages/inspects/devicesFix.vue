@@ -8,12 +8,12 @@
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">{{deviceInfo.buildingName}}{{deviceInfo.floor}}</text>
+						<text>所在位置</text><text class="value">{{deviceInfo.buildingName?deviceInfo.buildingName:''}}{{deviceInfo.floor?deviceInfo.floor:''}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>具体位置</text><text class="value">{{deviceInfo.room}}{{deviceInfo.door==1?'室内':'室外'}}</text>
+						<text>具体位置</text><text class="value">{{deviceInfo.room?deviceInfo.room:''}}{{deviceInfo.door==1?'室内':'室外'}}</text>
 					</view>
-					<view class="word flex justify-between align-center">
+					<view class="word flex justify-between align-center" v-show="deviceInfo.deviceSn">
 						<text>设备编号</text><text class="value">{{deviceInfo.deviceSn}}</text>
 					</view>
 				</view>

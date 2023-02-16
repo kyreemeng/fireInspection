@@ -54,7 +54,7 @@
 					<text v-else>{{deviceStatus}}</text>
 				</view>
 			</view>
-			<view class="item flex justify-between align-center">
+			<view class="item flex justify-between align-center" v-show="deviceMemo">
 				<view class="left"><text>备注信息</text></view>
 				<view class="right"><text>{{deviceMemo}}</text></view>
 			</view>

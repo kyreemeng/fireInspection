@@ -18,7 +18,7 @@
 				<view class="info">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">{{item.building}}{{item.floor}}{{item.roomName}}</text>
+						<text class="value">{{item.building?item.building:''}}{{item.floor?item.floor:''}}{{item.roomName?item.roomName:''}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">设备类型</text>
@@ -47,7 +47,7 @@
 			<view class="info">
 				<view class="word1 flex justify-between align-center">
 					<text class="desc">所在位置</text>
-					<text class="value">{{item.building}}{{item.floor}}{{item.roomName?item.roomName:''}}</text>
+					<text class="value">{{item.building?item.building:''}}{{item.floor?item.floor:''}}{{item.roomName?item.roomName:''}}</text>
 				</view>
 				<view class="word2 flex justify-between align-center">
 					<text class="desc">设备类型</text>

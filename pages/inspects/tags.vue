@@ -33,7 +33,7 @@
 				<view class="info">
 					<view class="word1 flex justify-between align-center">
 						<text class="desc">所在位置</text>
-						<text class="value">{{item.campusName}}{{item.buildingName}}{{item.floorName}}</text>
+						<text class="value">{{item.campusName?item.campusName:''}}{{item.buildingName?item.buildingName:''}}{{item.floorName?item.floorName:''}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
 						<text class="desc">设备数量</text>

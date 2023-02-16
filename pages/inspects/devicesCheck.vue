@@ -8,12 +8,12 @@
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">{{campusName}}{{buildingName}}{{floorName}}</text>
+						<text>所在位置</text><text class="value">{{campusName?campusName:''}}{{buildingName?buildingName:''}}{{floorName?floorName:''}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>具体位置</text><text class="value">{{roomName}}{{door==1?'室内':'室外'}}</text>
+						<text>具体位置</text><text class="value">{{roomName?roomName:''}}{{door==1?'室内':'室外'}}</text>
 					</view>
-					<view class="word flex justify-between align-center">
+					<view class="word flex justify-between align-center" v-show="deviceSn">
 						<text>设备编号</text><text class="value">{{deviceSn}}</text>
 					</view>
 				</view>
@@ -60,7 +60,7 @@
 				floorName:'',//楼层
 				roomName:'',//房间
 				door:null,//1 室内，2室外
-				deviceSn:null, //设备编码
+				deviceSn:null, //设备编号
 				targetInfoList:[{}],//指标信息
 			};
 		},
