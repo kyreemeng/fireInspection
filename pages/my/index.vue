@@ -2,8 +2,7 @@
 	<view class="content">
 		<view class="info">
 			<view class="detail flex  align-center">
-				<image class="avatar" v-if="avatarUrl" :src="avatarUrl" mode="aspectFit"></image>
-				<open-data class="avatar" v-else type="userAvatarUrl"></open-data>
+				<image class="avatar"  :src="avatarUrl" mode="aspectFit"></image>
 				<view class="word">
 					<view class="name flex  align-center">
 						<text class="value">{{nickname}}</text><text class="line">|</text><view class="tag">{{roleName}}</view>
@@ -70,7 +69,7 @@
 	export default {
 		data() {
 			return {
-				avatarUrl:'',
+				avatarUrl:'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
 				roleName:'角色',
 				nickname:'昵称',
 				phone:'13000000000',
@@ -86,6 +85,9 @@
 			};
 		},
 		onLoad() {
+			if(uni.getStorageSync('avatarUrl')){
+				this.avatarUrl = uni.getStorageSync('avatarUrl')
+			}
 			
 		},
 		onReady() {
@@ -120,7 +122,7 @@
 					.get('/firecontrol/api/wx/user/getUserInfo', param, null)
 					.then(res => {
 						uni.hideLoading();
-						this.avatarUrl = res.avatarUrl
+						// this.avatarUrl = res.avatarUrl
 						this.nickname = res.nickname
 						this.roleName = res.roleName
 						this.phone = this.setMobile(res.phone)

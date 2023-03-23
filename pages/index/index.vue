@@ -3,27 +3,45 @@
 		<view>
 		</view>
 		<view class="content">
-			<open-data class="avatar" type="userAvatarUrl"></open-data>
-			<button class="getbtn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信登录</button>
+			<image class="avatar" :src="avatarUrl"></image>
+			<button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar" v-if="!haveAva">
+				① 请授权使用微信头像
+			</button> 
+			<button class="getbtn" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" v-else>② 请授权微信登录</button>
 
 		</view>
 	</view>
 </template>
 
 <script>
+	const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+
 	export default {
 		data() {
 			return {
-
+				haveAva:false,
+				avatarUrl: defaultAvatarUrl,
 			}
 		},
 		onLoad() {
-
+				if(uni.getStorageSync('avatarUrl')){
+					this.haveAva = true;
+					this.avatarUrl = uni.getStorageSync('avatarUrl')
+				}
 		},
 		onReady() {
 			this.getLogin()
 		},
 		methods: {
+			  onChooseAvatar(e) {
+				this.avatarUrl = e.detail.avatarUrl;
+				uni.setStorageSync('avatarUrl', e.detail.avatarUrl)
+				this.haveAva = true;
+				uni.showToast({
+					title: '头像授权成功',
+					icon: 'none'
+				})
+			  },
 			getLogin() {
 				uni.login({
 					provider: 'weixin',
@@ -118,11 +136,10 @@
 		margin-top: 154rpx;
 		width: 128rpx;
 		height: 128rpx;
-		border-radius: 50%;
 		overflow: hidden;
 	}
 
-	.getbtn {
+	.avatar-wrapper,.getbtn {
 		margin-top: 50rpx;
 		width: 626rpx;
 		height: 100rpx;
