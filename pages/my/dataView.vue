@@ -133,7 +133,7 @@
 			
 		},
 		onShow() {
-		
+			
 		},
 		methods:{
 			getTaskSpeed: function() {
@@ -159,8 +159,18 @@
 						this.warningRealTotal = res.warningRealTotal //真实警情总数
 						this.warningTotal = res.warningTotal //报警总数
 						
-						this.checkPercent = Math.round(this.currentCheckTaskOverNum / this.currentCheckTaskTotal * 10000) / 100
-						this.protectPercent = Math.round(this.currentMaintenanceTaskOverNum/ this.currentMaintenanceTaskTotal * 10000) / 100
+						if(this.currentCheckTaskTotal>0){
+							this.checkPercent = Math.round(this.currentCheckTaskOverNum / this.currentCheckTaskTotal * 10000) / 100
+
+						}
+						
+						if(this.currentMaintenanceTaskTotal>0){
+							this.protectPercent = Math.round(this.currentMaintenanceTaskOverNum/ this.currentMaintenanceTaskTotal * 10000) / 100
+							
+						}else{
+							console.log("protectPercent:"+this.protectPercent)
+						} 
+						
 						
 					})
 					.catch(err => {

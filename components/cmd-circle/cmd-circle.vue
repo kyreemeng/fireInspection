@@ -195,7 +195,7 @@
       // 创建画布实例
       this.ctx = uni.createCanvasContext(this.cid, this)
       // upx转px 圈半径大小
-      this.width2px = uni.upx2px(this.width)
+      this.width2px = this.width / 2
       // 绘制初始 
       this.$nextTick(() => {
         this.drawStroke(this.percent)
