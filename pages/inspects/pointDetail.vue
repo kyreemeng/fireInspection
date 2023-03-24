@@ -109,7 +109,7 @@
 				</view>
 			</mescroll-uni>
 		</view>
-		<view class="bottom">
+		<view class="bottom" v-show="!isCommit">
 			<view class=" btn-area flex align-center justify-between">
 				<view class="btn" @tap="handleFix()">
 					报修
@@ -158,6 +158,7 @@
 				mescrollTop: 0,
 				mescrollBottom: 0,
 				historyList: [],
+				isCommit:false,
 			};
 		},
 		onLoad(options) {
@@ -266,6 +267,10 @@
 						this.deviceMemo = res.deviceMemo
 						this.floor = res.floor
 						this.deviceSn = res.deviceSn
+						if(res.isCommit){
+							this.isCommit = res.isCommit
+						}
+						
 
 					})
 					.catch(err => {
