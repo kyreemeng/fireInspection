@@ -2,9 +2,9 @@
  * 通用uni-app网络请求
  * 基于 Promise 对象实现更简单的 request 使用方式，支持请求和响应拦截
  */
-const baseUrl = 'http://221.226.18.75:8012';
-// const baseUrl = "https://mock.apifox.cn/m1/1182610-0-default";  //测试环境
-// const baseUrl = 'https://sorberlin.com'; //正式环境
+const baseUrl = 'http://221.226.18.75:8012';  //生产环境
+// const baseUrl = "https://mock.apifox.cn/m1/1182610-0-default";  //mock
+// const baseUrl = 'https://sorberlin.com'; 
 
 
 export default {
