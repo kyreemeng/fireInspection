@@ -224,6 +224,7 @@
 								font-size: 28rpx;
 								font-weight: 400;
 								color: #666666;
+								width: 220rpx;
 							}
 							.fix-word{
 								margin-left: 10rpx;

@@ -4,7 +4,7 @@
 			<view class="box">
 				<view class="top flex justify-between align-center">
 					<text class="name">{{deviceName}}</text>
-					<text class="time">{{reportTime}}</text>
+					<text class="time text-right">{{reportTime}}</text>
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
@@ -19,7 +19,7 @@
 					<view class="word flex justify-between align-center" v-show="showDetail">
 						<text>照片取证</text>
 						<view class="value" >
-							<image v-for="(item,index) in reportImages" :key="index" :src="item" mode="aspectFit"></image>
+							<image v-for="(item,index) in reportImages" :key="index" :src="baseUrl+item" mode="aspectFit"></image>
 						</view>
 					</view>
 					<view class="word flex justify-between align-center" v-show="showDetail">
@@ -31,7 +31,7 @@
 					<view class="btn flex justify-between align-center" @tap="handleShow()" v-else><text>收起</text><text class="cuIcon-fold" style="font-size: 26rpx;"> </text></view>
 				</view>
 			</view>
-			<view class="fix-date">
+			<view class="fix-date" v-show="repairStatus!=3">
 				<text class="title">维修时间</text>
 				<view class="date-content">
 					<picker class="picker"  mode="date" :value="repairTime"  :end="currentDate" @change="DateChange">
@@ -41,7 +41,7 @@
 					</picker>
 				</view>
 			</view>
-			<view class="fix-date">
+			<view class="fix-date" v-show="repairStatus!=3">
 				<text class="title">状态</text>
 				<view class="date-content">
 					<picker @change="StatusChange" :value="statusIndex" :range="statusList">
@@ -51,7 +51,7 @@
 					</picker>
 				</view>
 			</view>
-			<view class="fix-remarks">
+			<view class="fix-remarks" v-show="repairStatus!=3">
 				<text class="title">维修进展备注</text>
 				<view  class="remarks-content">
 					<textarea type="text" v-model="repairProgressMemo" placeholder="请输入备注" auto-height></textarea>
@@ -59,7 +59,7 @@
 			</view>
 		</view>
 		
-	<view class="bottom-btn">
+	<view class="bottom-btn" v-show="repairStatus!=3">
 		<view class="btn" @tap="repairUpdate()">
 			更新维修进展
 		</view>
@@ -71,6 +71,7 @@
 	export default {
 		data() {
 			return {
+				baseUrl: this.$api.config.baseUrl,
 				showDetail:false,
 				repairFlowId:null,
 				deviceName:null,
@@ -86,7 +87,7 @@
 				repairTime:null,
 				statusIndex: -1,
 				statusList: ['未开始', '进行中', '已完成'],
-				repairStatus:0,
+				repairStatus:0, //  2:未完成 3：已完成
 				currentDate:null,
 				repairProgressMemo:null,
 			};
@@ -227,7 +228,6 @@
 						font-size: 32rpx;
 						font-weight: 500;
 						color: #354052;
-						line-height: 80rpx;
 					}
 				}
 

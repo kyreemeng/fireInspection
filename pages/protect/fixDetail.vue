@@ -4,7 +4,7 @@
 			<view class="box">
 				<view class="top flex justify-between align-center">
 					<text class="name">{{deviceName}}</text>
-					<text class="time">{{reportTime}}</text>
+					<text class="time text-right">{{reportTime}}</text>
 				</view>
 				<view class="bottom flex-direction justify-between" >
 					<view class="word flex justify-between align-center">
@@ -19,7 +19,7 @@
 					<view class="word flex justify-between align-center">
 						<text>照片取证</text>
 						<view class="value" >
-							<image v-for="(item,index) in reportImages" :key="index" :src="item" mode="aspectFit"></image>
+							<image v-for="(item,index) in reportImages" :key="index" :src="baseUrl+item" mode="aspectFit"></image>
 						</view>
 					</view>
 					<view class="word flex justify-between align-center">
@@ -57,6 +57,7 @@
 	export default {
 		data() {
 			return {
+				baseUrl: this.$api.config.baseUrl,
 				repairFlowId:null,
 				deviceName:null,
 				reportTime:null,
@@ -190,12 +191,10 @@
 					background: linear-gradient(180deg, #DEE5FF 0%, rgba(226, 233, 255, 0.2) 100%);
 					border-radius: 8rpx 8rpx 0px 0px;
 					border-bottom: 1rpx solid #E5E5E5;
-
 					.name {
 						font-size: 32rpx;
 						font-weight: 500;
 						color: #354052;
-						line-height: 80rpx;
 					}
 				}
 

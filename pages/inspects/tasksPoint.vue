@@ -235,6 +235,7 @@
 						border-bottom: 1rpx solid  #E5E5E5;
 						.num{
 							.name{
+								width: 220rpx;
 								font-size: 28rpx;
 								font-weight: 400;
 								color: #666666;

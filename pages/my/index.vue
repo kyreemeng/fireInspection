@@ -5,7 +5,7 @@
 				<image class="avatar"  :src="avatarUrl" mode="aspectFit"></image>
 				<view class="word">
 					<view class="name flex  align-center">
-						<text class="value">{{nickname}}</text><text class="line">|</text><view class="tag">{{roleName}}</view>
+						<text class="value">{{nickname}}</text><text class="line">|</text><view class="tag">{{job}}</view>
 					</view>
 					<view class="tel">
 						{{phone}}
@@ -72,6 +72,7 @@
 				avatarUrl:'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
 				roleName:'角色',
 				nickname:'昵称',
+				job:'职务',
 				phone:'13000000000',
 				sex:'男',
 				currentCheckAll:0 ,//本期巡检任务（所有）
@@ -125,6 +126,7 @@
 						// this.avatarUrl = res.avatarUrl
 						this.nickname = res.nickname
 						this.roleName = res.roleName
+						this.job = res.job
 						this.phone = this.setMobile(res.phone)
 						
 					})

@@ -23,7 +23,7 @@
 			</view>
 			<view class="item flex justify-between align-center">
 				<view class="left"><text>具体位置</text></view>
-				<view class="right"><text>{{floor?floor:''}}{{room?room:''}}{{door==1?'室内':'室外'}}</text></view>
+				<view class="right"><text>{{floor?floor:''}}{{room?room:''}}</text></view>
 			</view>
 			<view class="item flex justify-between align-center">
 				<view class="left"><text>品牌</text></view>

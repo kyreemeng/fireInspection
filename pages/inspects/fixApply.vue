@@ -105,7 +105,9 @@
 		
 	},
 	onShow() {
-		
+		this.canReset && this.mescroll.resetUpScroll() // 重置列表数据为第一页
+		this.canReset && this.mescroll.scrollTo(0,0) // 把滚动条也重置到顶部
+		this.canReset = true // 过滤第一次的onShow事件
 	},
 	methods: {
 		tabSelect(e) {
