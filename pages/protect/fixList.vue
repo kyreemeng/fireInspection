@@ -27,7 +27,7 @@
 			<view class="item" v-for="(item,index) in repairList " :key="index">
 				<view class="title flex justify-between align-center">
 					<text>灭火器001</text>
-					<view class="btn" @tap="handleDetail(item.repairFlowId)" v-show="item.repairStatus!=3">查看</view>
+					<view class="btn" @tap="handleDetail(item)" v-show="item.repairStatus!=3">查看</view>
 				</view>
 				<view class="info">
 					<view class="word1 flex justify-between align-center">
@@ -125,9 +125,9 @@
 			this.mescroll.resetUpScroll();
 			console.log(this.reportDate)
 		},
-		handleDetail(repairFlowId){
+		handleDetail(item){
 		uni.navigateTo({
-			url:'repairDetail?repairFlowId='+repairFlowId	
+			url:'repairDetail?repairFlowId='+item.repairFlowId+'&repairStatus='+item.repairStatus	
 		})
 		},
 		initMescroll: function(mescroll) {

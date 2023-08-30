@@ -31,7 +31,7 @@
 					<view class="btn flex justify-between align-center" @tap="handleShow()" v-else><text>收起</text><text class="cuIcon-fold" style="font-size: 26rpx;"> </text></view>
 				</view>
 			</view>
-			<view class="fix-date" v-show="repairStatus!=3">
+			<view class="fix-date" v-show="showBtn">
 				<text class="title">维修时间</text>
 				<view class="date-content">
 					<picker class="picker"  mode="date" :value="repairTime"  :end="currentDate" @change="DateChange">
@@ -41,7 +41,7 @@
 					</picker>
 				</view>
 			</view>
-			<view class="fix-date" v-show="repairStatus!=3">
+			<view class="fix-date" v-show="showBtn">
 				<text class="title">状态</text>
 				<view class="date-content">
 					<picker @change="StatusChange" :value="statusIndex" :range="statusList">
@@ -51,7 +51,7 @@
 					</picker>
 				</view>
 			</view>
-			<view class="fix-remarks" v-show="repairStatus!=3">
+			<view class="fix-remarks" v-show="showBtn">
 				<text class="title">维修进展备注</text>
 				<view  class="remarks-content">
 					<textarea type="text" v-model="repairProgressMemo" placeholder="请输入备注" auto-height></textarea>
@@ -59,7 +59,7 @@
 			</view>
 		</view>
 		
-	<view class="bottom-btn" v-show="repairStatus!=3">
+	<view class="bottom-btn" v-show="showBtn">
 		<view class="btn" @tap="repairUpdate()">
 			更新维修进展
 		</view>
@@ -90,11 +90,16 @@
 				repairStatus:0, //  2:未完成 3：已完成
 				currentDate:null,
 				repairProgressMemo:null,
+				showBtn:true,
 			};
 		},
 		onLoad(options) {
 			console.log('接收到repairFlowId：' + options.repairFlowId)
+			console.log('接收到repairStatus：' + options.repairStatus)
 			this.repairFlowId = options.repairFlowId
+			if(options.repairStatus==3){
+				this.showBtn = false;
+			}
 			this.getReportDetail();
 		},
 		onReady() {
