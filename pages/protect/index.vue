@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="set">
 			<text class="title">维保管理</text>
-			<view class="box flex justify-between align-center">
+			<view class="box flex justify-between align-center" style="border-radius: 8rpx;">
 				<view class="left" @tap="handleProtect()">
 					<image src="../../static/image/protect/icon_myprotect.png" mode="aspectFit"></image>
 					<view class="name">我的维保任务</view>
@@ -13,14 +13,20 @@
 		</view>
 		<view class="manager">
 			<text class="title">维修管理</text>
-			<view class="box flex justify-between align-center">
+			<view class="box flex justify-between align-center" style="border-radius: 8rpx 8rpx 0 0;">
 				<view class="left" @tap="handleEnsure()">
 					<image src="../../static/image/protect/icon_ensure.png" mode="aspectFit"></image>
 					<view class="name">待确认报修申请</view>
 				</view>
 				<view class="right" @tap="handleMyfix()">
 					<image src="../../static/image/protect/icon_myfix.png" mode="aspectFit"></image>
-					<view class="name">我的维修任务</view>
+					<view class="name">巡检维修任务</view>
+				</view>
+			</view>
+			<view class="box flex justify-between align-center " style="border-radius: 0 0 8rpx 8rpx;margin-top: 0;">
+				<view class="left" @tap="handleNormalRepairTasks()">
+					<image src="../../static/image/protect/icon_normalRepairDetail.png" mode="aspectFit"></image>
+					<view class="name">普通维修任务</view>
 				</view>
 			</view>
 		</view>
@@ -50,6 +56,11 @@
 					url:'fixList'
 				})
 			},
+			handleNormalRepairTasks(){
+				uni.navigateTo({
+					url:'normalRepairTasks'
+				})
+			}
 		}
 	}
 </script>
@@ -81,7 +92,6 @@
 		width: 100%;
 		padding: 30rpx 74rpx 20rpx 74rpx;
 		background: #fff;
-		border-radius: 8rpx;
 		.left,.right{
 			width: 198rpx;
 			text-align: center;

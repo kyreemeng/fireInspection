@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="set">
 			<text class="title">巡检设置</text>
-			<view class="box flex justify-between align-center">
+			<view class="box flex justify-between align-center" style="border-radius: 8rpx;">
 				<view class="left" @tap="handleScan()">
 					<image src="../../static/image/inspects/icon_scan.png" mode="aspectFit"></image>
 					<view class="name">扫码查询</view>
@@ -15,14 +15,20 @@
 		</view>
 		<view class="manager">
 			<text class="title">巡检管理</text>
-			<view class="box flex justify-between align-center">
+			<view class="box flex justify-between align-center" style="border-radius: 8rpx 8rpx 0 0;">
 				<view class="left" @tap="handleTasks()">
 					<image src="../../static/image/inspects/icon_tasks.png" mode="aspectFit"></image>
 					<view class="name">我的巡检任务</view>
 				</view>
 				<view class="right" @tap="handleFixApply()">
 					<image src="../../static/image/inspects/icon_fix.png" mode="aspectFit"></image>
-					<view class="name">我的报修申请</view>
+					<view class="name">我的巡检报修</view>
+				</view>
+			</view>
+			<view class="box flex justify-between align-center " style="border-radius: 0 0 8rpx 8rpx;margin-top: 0;">
+				<view class="left" @tap="handleNormalRepair()">
+					<image src="../../static/image/inspects/icon_normalRepair.png" mode="aspectFit"></image>
+					<view class="name">我的普通报修</view>
 				</view>
 			</view>
 		</view>
@@ -86,6 +92,11 @@
 					url:'fixApply'
 				})
 			},
+			handleNormalRepair(){
+				uni.navigateTo({
+					url:'normalRepair'
+				})
+			}
 			
 		}
 	}
@@ -118,7 +129,6 @@
 		width: 100%;
 		padding: 30rpx 74rpx 20rpx 74rpx;
 		background: #fff;
-		border-radius: 8rpx;
 		.left,.right{
 			width: 198rpx;
 			text-align: center;
@@ -135,6 +145,7 @@
 			color: #333333;
 		}
 	}
+	
 	
 }
 </style>

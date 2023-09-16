@@ -73,7 +73,7 @@
             "path" : "pages/inspects/fixApply",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "报修申请",
+                "navigationBarTitleText": "我的巡检报修申请",
                 "enablePullDownRefresh": false
             }
             
@@ -91,7 +91,7 @@
             "path" : "pages/protect/fixList",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "我的维修任务",
+                "navigationBarTitleText": "我的巡检维修任务",
                 "enablePullDownRefresh": false
             }
             
@@ -170,6 +170,33 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "数据概览",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/normalRepair",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的普通报修申请",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/protect/normalRepairTasks",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的普通维修任务",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/inspects/repairCommit",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "新建普通报修申请",
                 "enablePullDownRefresh": false
             }
             
