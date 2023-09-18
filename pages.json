@@ -201,6 +201,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/protect/normalRepairDetail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "普通维修任务详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "default",

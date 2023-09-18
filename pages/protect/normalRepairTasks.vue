@@ -20,21 +20,21 @@
 			 :top="mescrollTop+'px'" >
 			<view class="item" v-for="(item,index) in repairList " :key="index">
 				<view class="title flex justify-between align-center">
-					<text>灭火器001</text>
+					<text>{{item.repairTitle}}</text>
 					<view class="btn" @tap="handleDetail(item)" v-show="item.repairStatus!=3">查看</view>
 				</view>
 				<view class="info">
 					<view class="word1 flex justify-between align-center">
-						<text class="desc">所在位置</text>
-						<text class="value">{{item.campus?item.campus:''}}{{item.building?item.building:''}}{{item.floor?item.floor:''}}{{item.roomName?item.roomName:''}}</text>
+						<text class="desc">设备名称</text>
+						<text class="value">{{item.deviceName}}</text>
 					</view>
 					<view class="word2 flex justify-between align-center">
-						<text class="desc">设备类型</text>
-						<text class="value">{{item.deviceType}}</text>
+						<text class="desc">详细地址</text>
+						<text class="value">{{item.addressDetail}}</text>
 					</view>
 					<view class="word3 flex justify-between align-center">
-						<text class="desc">异常指标</text>
-						<text class="value">{{item.targetName}}</text>
+						<text class="desc">故障描述</text>
+						<text class="value">{{item.faultDescription}}</text>
 					</view>
 					<view class="word4 flex justify-between align-center">
 						<text class="desc">报修时间</text>
@@ -50,7 +50,7 @@
 					<view class="word6 flex justify-between align-center">
 						<text class="desc">完成时间</text>
 						<text class="value" v-if="TabCur==0">--</text>
-						<text class="value" v-else>{{item.completeTime}}</text>
+						<text class="value" v-else>{{item.repairCompleteTime}}</text>
 					</view>
 				</view>
 			</view>
@@ -84,6 +84,7 @@
 			mescrollBottom: 0,
 			repairStatus:2, //  2:未完成 3：已完成
 			repairList:[],
+			
 		};
 	},
 	onLoad() {
@@ -112,7 +113,7 @@
 		},
 		handleDetail(item){
 		uni.navigateTo({
-			url:'repairDetail?repairFlowId='+item.repairFlowId+'&repairStatus='+item.repairStatus	
+			url:'normalRepairDetail?repairFlowId='+item.repairFlowId+'&repairStatus='+item.repairStatus	
 		})
 		},
 		initMescroll: function(mescroll) {
@@ -135,7 +136,7 @@
 			
 		}
 			this.$api
-				.post('/firecontrol/api/wx/normalRepair/queryWaitConfirmNormalRepairPage', param, null)
+				.post('/firecontrol/api/wx/normalRepair/queryMyNormalRepairPage', param, null)
 				.then(res => {
 					uni.hideLoading();
 						if (mescroll.num == 1) {
