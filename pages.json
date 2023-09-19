@@ -210,6 +210,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/protect/normalRepairEnsure",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "待确认普通报修详情",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationStyle": "default",

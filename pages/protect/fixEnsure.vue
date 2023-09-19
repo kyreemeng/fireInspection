@@ -1,5 +1,12 @@
 <template>
 	<view class="fixensure-content">
+		<scroll-view scroll-x class="bg-white nav fixed" scroll-with-animation :scroll-left="scrollLeft"  >
+			<view class="flex text-center">
+				<view class="cu-item flex-sub" :class="index==TabCur?'text-blue cur':''" v-for="(item,index) in TabList" :key="index" @tap="tabSelect" :data-id="index">
+					{{item}}
+				</view>
+			</view>
+		</scroll-view>
 		<view class="choose flex justify-between align-center ">
 				<picker class="picker  " @change="DeviceChange" :value="deviceIndex"  :range="deviceTypeList">
 					<text>
@@ -18,8 +25,33 @@
 			<mescroll-uni :down="downOption" @down="downCallback" :up="upOption" @up="upcallback" @init="initMescroll" :fixed="true"
 			 :top="mescrollTop+'px'" >
 			<view class="item" v-for="(item,index) in repairList" :key="index">
+				<view v-if="TabCur==0">
+					<view class="title flex justify-between align-center">
+						<text >{{item.repairTitle}}</text>
+						<view class="btn" @tap="handleNormal(item)">查看</view>
+					</view>
+					<view class="info">
+						<view class="word1 flex justify-between align-center">
+							<text class="desc">设备名称</text>
+							<text class="value">{{item.deviceName}}</text>
+						</view>
+						<view class="word2 flex justify-between align-center">
+							<text class="desc">详细地址</text>
+							<text class="value">{{item.addressDetail}}</text>
+						</view>
+						<view class="word3 flex justify-between align-center">
+							<text class="desc">故障描述</text>
+							<text class="value">{{item.faultDescription}}</text>
+						</view>
+						<view class="word4 flex justify-between align-center">
+							<text class="desc">报修时间</text>
+							<text class="value">{{item.reportTime}}</text>
+						</view>
+					</view>
+				</view>
+			<view v-else>
 				<view class="title flex justify-between align-center">
-					<text>{{item.deviceName}}</text>
+					<text >{{item.deviceName}}</text>
 					<view class="btn" @tap="handleDetail(item.repairFlowId)">查看</view>
 				</view>
 				<view class="info">
@@ -40,6 +72,8 @@
 						<text class="value">{{item.reportTime}}</text>
 					</view>
 				</view>
+				
+			</view>
 			</view>
 			</mescroll-uni>
 		</view>
@@ -56,6 +90,9 @@
 		},
 	data() {
 		return {
+			TabList: ['普通报修','巡检报修'],
+			TabCur: 0,
+			scrollLeft: 0,
 			deviceIndex: -1,
 			deviceTypeList:[],
 			deviceType:null,
@@ -84,7 +121,7 @@
 		this.currentDate = date.getFullYear() + "-" + (month > 9 ? month : ('0' + month)) + "-" + (day > 9 ? day : ('0' +
 			day));
 		
-		this.mescrollTop = uni.upx2px(90);
+		this.mescrollTop = uni.upx2px(8)+this.CustomBar;
 	},
 	onReady() {
 		
@@ -96,6 +133,13 @@
 			this.getDeviceTypeList()
 	},
 	methods: {
+		tabSelect(e) {
+			console.log(this.TabList[e.currentTarget.dataset.id])
+			this.TabCur = e.currentTarget.dataset.id;
+			this.scrollLeft = (e.currentTarget.dataset.id - 1) * 60
+			console.log(this.TabCur)
+			this.mescroll.resetUpScroll();
+		},
 		DeviceChange(e) {
 			this.deviceIndex = e.detail.value
 			this.deviceType = this.deviceTypeList[this.deviceIndex]
@@ -106,6 +150,11 @@
 			this.reportDate = e.detail.value
 			this.mescroll.resetUpScroll();
 			console.log(this.reportDate)
+		},
+		handleNormal(item){
+		uni.navigateTo({
+			url:"normalRepairEnsure?item=" +JSON.stringify(item)
+		})
 		},
 		handleDetail(repairFlowId){
 		uni.navigateTo({
@@ -122,16 +171,32 @@
 			pageNum: mescroll.num,
 			pageSize: mescroll.size,
 		};
+		let reapairUrl;
+		
+		if(this.TabCur==0){  //普通报修
+			reapairUrl='/firecontrol/api/wx/normalRepair/queryWaitConfirmNormalRepairPage'
+			if(this.reportDate){
+				param.reportBeginTime = this.reportDate
+				param.reportEndTime = this.reportDate
+				
+			}
+			
+		}else {
+			reapairUrl='/firecontrol/api/wx/maintenance/getPendingConfirmRepairPage'
+			
+			if(this.reportDate){
+				param.reportDate = this.reportDate
+				
+			}
+		}
+	
 		if(this.deviceType){
 			param.deviceType = this.deviceType
 			
 		}
-		if(this.reportDate){
-			param.reportDate = this.reportDate
-			
-		}
+		
 			this.$api
-				.post('/firecontrol/api/wx/maintenance/getPendingConfirmRepairPage', param, null)
+				.post(reapairUrl, param, null)
 				.then(res => {
 					uni.hideLoading();
 						if (mescroll.num == 1) {
@@ -185,6 +250,8 @@
 			width: 100%;
 			height: 88rpx;
 			background: #FFFFFF;
+			position: fixed;
+			top: 90rpx;
 			.picker{
 				width: 375rpx;
 				height: 88rpx;
