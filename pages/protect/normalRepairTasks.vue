@@ -113,7 +113,7 @@
 		},
 		handleDetail(item){
 		uni.navigateTo({
-			url:'normalRepairDetail?repairFlowId='+item.repairFlowId+'&repairStatus='+item.repairStatus	
+			url:'normalRepairDetail?item=' +JSON.stringify(item)
 		})
 		},
 		initMescroll: function(mescroll) {
@@ -132,7 +132,8 @@
 			
 		}
 		if(this.reportDate){
-			param.reportDate = this.reportDate
+			param.reportBeginTime = this.reportDate
+			param.reportEndTime = this.reportDate
 			
 		}
 			this.$api

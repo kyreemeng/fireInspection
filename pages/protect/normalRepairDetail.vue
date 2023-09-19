@@ -3,23 +3,23 @@
 		<view class="point_name">
 			<view class="box">
 				<view class="top flex justify-between align-center">
-					<text class="name">{{deviceName}}</text>
+					<text class="name">{{repairTitle}}</text>
 					<text class="time text-right">{{reportTime}}</text>
 				</view>
 				<view class="bottom flex-direction justify-between">
 					<view class="word flex justify-between align-center">
-						<text>所在位置</text><text class="value">{{deviceName}}{{buildingName}}{{floorName}}</text>
+						<text>设备名称</text><text class="value">{{deviceName}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>设备类型</text><text class="value">{{deviceType}}</text>
+						<text>详细地址</text><text class="value">{{addressDetail}}</text>
 					</view>
 					<view class="word flex justify-between align-center">
-						<text>异常指标</text><text class="value">{{targetName}}</text>
+						<text>故障描述</text><text class="value">{{faultDescription}}</text>
 					</view>
 					<view class="word flex justify-between align-center" v-show="showDetail">
-						<text>照片取证</text>
+						<text>故障图片</text>
 						<view class="value" >
-							<image v-for="(item,index) in reportImages" :key="index" :src="baseUrl+item" mode="aspectFit"></image>
+							<image v-for="(item,index) in images" :key="index" :src="baseUrl+item" mode="aspectFit"></image>
 						</view>
 					</view>
 					<view class="word flex justify-between align-center" v-show="showDetail">
@@ -73,15 +73,13 @@
 			return {
 				baseUrl: this.$api.config.baseUrl,
 				showDetail:false,
-				repairFlowId:null,
-				deviceName:null,
+				id:null,
+				repairTitle:null,
 				reportTime:null,
-				campusName:null,
-				buildingName:null,
-				floorName:null,
-				deviceType:null,
-				targetName:null,
-				reportImages:[],
+				deviceName:null,
+				addressDetail:null,
+				faultDescription:null,
+				images:[],
 				reportMemo:null,
 				repairSpeedInfo:{},
 				repairTime:null,
@@ -94,13 +92,21 @@
 			};
 		},
 		onLoad(options) {
-			console.log('接收到repairFlowId：' + options.repairFlowId)
-			console.log('接收到repairStatus：' + options.repairStatus)
-			this.repairFlowId = options.repairFlowId
-			if(options.repairStatus==3){
+			console.log('接收到id：' + JSON.parse(options.item).id)
+			this.id =  JSON.parse(options.item).id
+			this.repairTitle =  JSON.parse(options.item).repairTitle
+			this.reportTime =  JSON.parse(options.item).reportTime
+			this.deviceName =  JSON.parse(options.item).deviceName
+			this.addressDetail =  JSON.parse(options.item).addressDetail
+			this.faultDescription =  JSON.parse(options.item).faultDescription
+			this.images =  JSON.parse(options.item).images
+			if(JSON.parse(options.item).reportMemo){
+				this.reportMemo =  JSON.parse(options.item).reportMemo
+			}
+			if(JSON.parse(options.item).repairStatus==3){
 				this.showBtn = false;
 			}
-			this.getNormalRepairDetail();
+			
 		},
 		onReady() {
 			let date = new Date();
@@ -145,40 +151,11 @@
 			this.repairStatus  = Number(this.statusIndex) +1
 			console.log(this.statusList[this.statusIndex]+'：'+this.repairStatus)
 		},
-			getNormalRepairDetail: function() {
-				uni.showLoading();
-				let param = {
-					repairFlowId:this.repairFlowId
-				};
-				this.$api
-					.get('/firecontrol/api/wx/normalRepair/getNormalRepairDetail', param, null)
-					.then(res => {
-						uni.hideLoading();
-						this.deviceName = res.deviceName
-						this.reportTime = res.reportTime
-						this.campusName = res.campusName
-						this.buildingName = res.buildingName
-						this.floorName = res.floorName
-						this.deviceType = res.deviceType
-						this.targetName = res.targetName
-						this.reportImages = res.reportImages
-						this.reportMemo = res.reportMemo
-						this.repairSpeedInfo = res.repairSpeedInfo
-						
-					})
-					.catch(err => {
-						uni.hideLoading();
-						uni.showToast({
-							icon: "none",
-							title: "接口请求异常"
-						})
-					});
-			
-			},
+		
 			updateRepair: function() {
 				uni.showLoading();
 				let param = {
-					repairFlowId:this.repairFlowId,
+					repairId:this.id,
 					repairTime:this.repairTime,
 					repairStatus:this.repairStatus
 				};
