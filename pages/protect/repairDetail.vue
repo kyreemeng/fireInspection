@@ -34,11 +34,12 @@
 			<view class="fix-date" v-show="showBtn">
 				<text class="title">维修时间</text>
 				<view class="date-content">
-					<picker class="picker"  mode="date" :value="repairTime"  :end="currentDate" @change="DateChange">
+					<!-- <picker class="picker"  mode="date" :value="repairTime"  :end="currentDate" @change="DateChange">
 						<text >
 							{{repairTime?repairTime:'请选择时间'}}
 						</text>
-					</picker>
+					</picker> -->
+					<uni-datetime-picker type="datetime" v-model="datetimesingle" :end="currentDate" @change="changeLog" return-type="string"  />
 				</view>
 			</view>
 			<view class="fix-date" v-show="showBtn">
@@ -91,6 +92,7 @@
 				currentDate:null,
 				repairProgressMemo:null,
 				showBtn:true,
+				datetimesingle: '',
 			};
 		},
 		onLoad(options) {
@@ -103,20 +105,22 @@
 			this.getReportDetail();
 		},
 		onReady() {
-			let date = new Date();
-			let month = date.getMonth() + 1;
-			let day = date.getDate();
-			let date2 = new Date(date);
-			date2.setDate(day - 6);
-			let month2 = date2.getMonth() + 1;
-			let day2 = date2.getDate();
-			this.currentDate = date.getFullYear() + "-" + (month > 9 ? month : ('0' + month)) + "-" + (day > 9 ? day : ('0' +
-				day));
+			this.currentDate = Date.now()
 		},
 		onShow() {
 			
 		},
+		watch: {
+			datetimesingle(newval) {
+				console.log('单选:', this.datetimesingle);
+			}
+		},
 		methods: {
+			changeLog(e) {
+				console.log('change事件:', e);
+				this.repairTime = e;
+				
+			},
 			repairUpdate() {		
 				if(!this.repairTime){
 					uni.showToast({

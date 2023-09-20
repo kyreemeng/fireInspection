@@ -8,7 +8,7 @@
 			</view>
 		</scroll-view>
 		<view class="choose flex justify-between align-center ">
-				<picker class="picker  " @change="DeviceChange" :value="deviceIndex"  :range="deviceTypeList">
+				<picker class="picker  " @change="DeviceChange" :value="deviceIndex"  :range="deviceTypeList" v-if="TabCur==1">
 					<text>
 						{{deviceIndex>-1?deviceTypeList[deviceIndex]:'设备类型'}}
 					</text>
@@ -188,12 +188,13 @@
 				param.reportDate = this.reportDate
 				
 			}
+			if(this.deviceType){
+				param.deviceType = this.deviceType
+				
+			}
 		}
 	
-		if(this.deviceType){
-			param.deviceType = this.deviceType
-			
-		}
+		
 		
 			this.$api
 				.post(reapairUrl, param, null)

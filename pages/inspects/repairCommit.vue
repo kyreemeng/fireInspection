@@ -275,6 +275,9 @@
 					font-weight: 400;
 					color: #858B9C;
 					line-height: 40rpx;
+					.word{
+						margin-top: 10rpx;
+					}
 
 					input {
 						width: 490rpx;
