@@ -42,7 +42,7 @@
 							{{repairTime?repairTime:'请选择时间'}}
 						</text>
 					</picker> -->
-					<uni-datetime-picker type="datetime" v-model="datetimesingle" :end="currentDate" @change="changeLog" return-type="string"  />
+					<uni-datetime-picker type="datetime" v-model="repairTime" :end="currentDate" @change="changeLog" return-type="string"  />
 				</view>
 
 			</view>
@@ -88,14 +88,13 @@
 				images: [],
 				reportMemo: null,
 				repairSpeedInfo: {},
-				repairTime: null,
 				statusIndex: -1,
 				statusList: ['未开始', '进行中', '已完成'],
 				repairStatus: 0, //  1:未开始 2：进行中 3：已完成
 				currentDate: null,
 				repairProgressMemo: null,
 				showBtn: true,
-				datetimesingle: '',
+				repairTime: '',
 				
 			};
 		},
@@ -118,24 +117,31 @@
 			if (JSON.parse(options.item).repairStatus == 3) {
 				this.showBtn = false;
 			}
+			if (JSON.parse(options.item).repairSpeedInfo.repairUpdateTime) {
+				this.repairTime = JSON.parse(options.item).repairSpeedInfo.repairUpdateTime
+			}
+			if (JSON.parse(options.item).repairSpeedInfo.repairProgressMemo) {
+				this.repairProgressMemo = JSON.parse(options.item).repairSpeedInfo.repairProgressMemo
+			}
+			
 
 		},
 		onReady() {
 			this.currentDate = Date.now()
+			
 
 		},
 		onShow() {
 
 		},
 		watch: {
-			datetimesingle(newval) {
-				console.log('单选:', this.datetimesingle);
+			repairTime(newval) {
+				console.log('单选:', this.repairTime);
 			}
 		},
 		methods: {
 			changeLog(e) {
 				console.log('change事件:', e);
-				this.repairTime = e;
 				
 			},
 			repairUpdate() {
@@ -156,10 +162,6 @@
 			},
 			handleShow() {
 				this.showDetail = !this.showDetail
-			},
-			DateChange(e) {
-				this.repairTime = e.detail.value
-				console.log(this.repairTime)
 			},
 			StatusChange(e) {
 				this.statusIndex = e.detail.value
